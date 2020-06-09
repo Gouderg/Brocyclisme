@@ -8,16 +8,26 @@
 </head>	
 <body>
 	<?php require "header.html" ?>
-	<section id="cyclistes">
-		<div id="liste-cyclistes" class="container"> </div>
-			<form>
-				<div class="input-group">
-					<div class="input-group-prepend">
-						<span class="input-group-text"> Listes - Cycliste></span>
-					</div> 
-				</div>
-				<br>
-			</form>
+	<section class="container">
+		<h4 style="text-decoration: underline; font-family: bold; color: red">Liste des coureurs</h4>
+		<br>
+		<div id="listeCycliste" class="container"></div>
+	</section>
+	<br>
+	<br>
+
+				<section>                    
+						<form>
+							
+							   
+							   <div id="infos" class="container" style="display: none;">
+								<h1> INFORMATIONS DU CYCLISTE</h1>
+								
+							   </div> 
+							
+							
+						</form>
+					</div>
 	</section>
 
 	<?php require "footer.html" ?>

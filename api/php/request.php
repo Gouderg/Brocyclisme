@@ -49,7 +49,6 @@
 					$data = dbRecupCourse($db);
 				}
 				break;
-			
 		}
 		// On encode en json avec le bon code 
 		encodeData($data, $requestMethod);
@@ -57,8 +56,18 @@
 	} else if ($requestRessource == 'cyclistes') {
 
 		// On récupère des informations sur les cyclistes
-		encodeData(dbRequestCycliste($db), $requestMethod);
-	}
+		if ($id == NULL) {
+			encodeData(dbRequestCyclistes($db), $requestMethod);
+		} else {
+			encodeData(dbRequestInfos($db, $id), $requestMethod);
+		}
+
+	} 
+
+
+
+	header('HTTP/1.1 404 Bad request');
+	exit(1);
 
 	// Fonction qui encode la réponse en json et renvoie le bon code
 	function encodeData($data, $code) {

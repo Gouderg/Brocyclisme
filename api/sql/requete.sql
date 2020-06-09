@@ -3,29 +3,6 @@ SELECT admin FROM user WHERE mail="te@warnerbros.com" AND password="thecat";
 SELECT admin FROM user WHERE mail="jlr@mental.com" AND password="smiley";
 
 
-### Requête qui récupère la liste des coureurs d'un club
-SELECT * 
-FROM c.cycliste
-JOIN 
-
-# Étape 1: on récupère le mail
-SELECT mail FROM user WHERE nom = "Hunter" AND prenom = "Rick";
-
-# Étape 2: On récupère le nom du club
-SELECT c.club 
-FROM club c
-JOIN user u ON c.mail = u.mail
-WHERE u.nom = "Hunter" AND u.prenom = "Rick";
-
-# Étape 3: 
-SELECT y.nom, y.prenom, y.club 
-FROM cycliste y 
-JOIN club c ON y.club = c.club
-JOIN user u ON c.mail = u.mail
-WHERE u.nom = "Hunter" AND u.prenom = "Rick";
-
-
-
 #### Requêtes pour course
 ### Test si le responsable est le créateur de la course
 SELECT co.date 
