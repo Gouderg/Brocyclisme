@@ -29,8 +29,16 @@
 	} else if ($requestRessource == 'cyclistes') {
 
 		// On récupère des informations sur les cyclistes
-		encodeData(dbRequestCycliste($db), $requestMethod);
+		encodeData(dbRequestCyclistes($db), $requestMethod);
+
+	} else if($requestRessource =='cycliste'){
+		//on recupère les info d'un cycliste 
+		encodeData(dbRequestInfos($db), $requestMethod);
 	}
+
+
+	header('HTTP/1.1 404 Bad request');
+	exit(1);
 
 	// Fonction qui encode la réponse en json et renvoie le bon code
 	function encodeData($data, $code) {
