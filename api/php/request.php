@@ -15,17 +15,22 @@
 	$request = explode('/',substr($_SERVER['PATH_INFO'], 1));
 	$requestRessource = array_shift($request);
 	$data = false;
+	
+
 
 	if ($requestRessource == 'authenticate') {
 		encodeData(authenticate($db), $requestMethod);
 
 	} else if ($requestRessource == 'course') {
+		
+		// On récupère la liste des courses disponibles avec quelques informations 
+		encodeData(dbRecupCourse($db), $requestMethod);
 
-		// On récupère la liste des courses disponibles avec quelques information
-		$data = dbRecupCourse($db);
-		encodeData($data, $requestMethod);
+	} else if ($requestRessource == 'cyclistes') {
+
+		// On récupère des informations sur les cyclistes
+		encodeData(dbRequestCycliste($db), $requestMethod);
 	}
-
 
 	// Fonction qui encode la réponse en json et renvoie le bon code
 	function encodeData($data, $code) {
@@ -46,6 +51,7 @@
 		exit();
 	}
 
+	// Fonction pour l'authentification
 	function authenticate($db) {
 		// Récupère le login/password
 		$login = $_SERVER['PHP_AUTH_USER'];
@@ -57,4 +63,6 @@
 			exit();
 		}
 	}
+
+
 ?>

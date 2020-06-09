@@ -8,19 +8,17 @@
 </head>	
 <body>
 	<?php require "header.html" ?>
-
-
-	<section id="cyclistes" style="display: none;">
-        <div id="liste-cyclistes" class="container"> </div>
-            <form>
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"> Listes - Cycliste></span>
-                    </div> 
-                </div>
-                <br>
-            </form>
-   	</section>
+	<section id="cyclistes">
+		<div id="liste-cyclistes" class="container"> </div>
+			<form>
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text"> Listes - Cycliste></span>
+					</div> 
+				</div>
+				<br>
+			</form>
+	</section>
 
 	<?php require "footer.html" ?>
 
