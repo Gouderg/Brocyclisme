@@ -15,6 +15,11 @@
 		<br>
 		<div id="listeCourse" class="container"></div>
 	</section>
+	
+	<br><br><br>
+	<section class="container" id="Information" style="display: none;"></section>
+	<section class="container" id="Inscription" style="display: none;"></section>
+	<section class="container" id="Classement" style="display: none;"></section>
 
 	<?php require "footer.html" ?>
 </body>

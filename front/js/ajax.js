@@ -43,6 +43,7 @@ function httpErrors(errorCode) {
 		400: '400: Requête incorrecte',
 		401: '401: Authentifiez-vous',
 		403: '403: Accès refusé',
+		404: '404: Bad request',
 		500: '500: Erreur interne au Serveur',
 		503: '503: Service indisponible'
 	}

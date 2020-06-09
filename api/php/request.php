@@ -14,6 +14,9 @@
 	$requestMethod = $_SERVER['REQUEST_METHOD'];
 	$request = explode('/',substr($_SERVER['PATH_INFO'], 1));
 	$requestRessource = array_shift($request);
+	$id = array_shift($request);
+	if ($id == '') $id = NULL;
+
 	$data = false;
 	
 
@@ -22,9 +25,34 @@
 		encodeData(authenticate($db), $requestMethod);
 
 	} else if ($requestRessource == 'course') {
-		
-		// On récupère la liste des courses disponibles avec quelques informations 
-		encodeData(dbRecupCourse($db), $requestMethod);
+		switch ($requestMethod) {
+			case 'GET':
+				if ($id != NULL && isset($_GET['nom']) && isset($_GET['prenom'])) {
+					$infoCourse = false;
+					$infoParticipants = false;
+
+					// On regarde si le user est bien l'admin
+					if (dbRequestCreateurCourse($db, $_GET['nom'], $_GET['prenom'], $id)) {
+						// Si c'est le monsieur qui a crée la course, il accède à la liste entière des personnes
+						$infoParticipants = dbRequestAllPartiCourse($db, $id);
+
+					} else {
+						// Sinon il récupère juste les informations de son club
+						$infoParticipants = dbRequestClubPartiCourse($db, $_GET['nom'], $_GET['prenom'], $id);
+
+					}
+
+					$infoCourse = dbRecupOneCourse($db, $id);			// On récupère les infos précise d'une course
+					$data['participants'] = $infoParticipants;			// On crée un objet participant
+					$data['course'] = $infoCourse;						// On crée un objet course
+				} else {
+					$data = dbRecupCourse($db);
+				}
+				break;
+			
+		}
+		// On encode en json avec le bon code 
+		encodeData($data, $requestMethod);
 
 	} else if ($requestRessource == 'cyclistes') {
 

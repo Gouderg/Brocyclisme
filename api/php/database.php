@@ -32,6 +32,88 @@
 		return $result; 
 	}
 
+	# Renvoie True/False pour savoir si le user a créée la course
+	function dbRequestCreateurCourse($db, $nom, $prenom, $id) {
+		try {
+			$request = "SELECT co.date 
+						FROM course co
+						JOIN club c ON c.club = co.club
+						JOIN user u ON c.mail = u.mail
+						WHERE u.nom=:nom AND u.prenom=:prenom AND co.id=:id";
+			$statement = $db->prepare($request);
+			$statement->bindParam(':nom', $nom, PDO::PARAM_STR, 20);
+			$statement->bindParam(':prenom', $prenom, PDO::PARAM_STR, 20);
+			$statement->bindParam(':id', $id, PDO::PARAM_INT);
+			$statement->execute();
+			$result = $statement->fetch();
+
+		} catch (PDOException $exception) {
+			error_log('Connection error: '.$exception->getMessage());
+			return false;
+		}
+		if ($result) return true;
+		return false;
+	}
+
+	# Renvoie la liste de tous les participants à une course
+	function dbRequestAllPartiCourse($db, $id) {
+		try {
+			$request = "SELECT c.nom, c.prenom, c.mail, c.num_licence, c.categorie, c.club, p.dossart
+						FROM cycliste c
+						JOIN participe p ON p.mail=c.mail
+						JOIN course co ON co.id = p.id
+						WHERE co.id = :id";
+			$statement = $db->prepare($request);
+			$statement->bindParam(':id', $id, PDO::PARAM_INT);
+			$statement->execute();
+			$result = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+		} catch (PDOException $exception) {
+			error_log('Connection error: '.$exception->getMessage());
+			return false;
+		}
+		return $result;
+	}
+
+	# Fonction qui renvoie la liste des participants d'un club
+	function dbRequestClubPartiCourse($db, $nom, $prenom, $id) {
+		try {
+			$request = " SELECT cy.nom, cy.prenom, cy.mail, cy.num_licence, cy.categorie, cy.club, p.dossart
+						FROM participe p
+						JOIN cycliste cy ON p.mail = cy.mail
+						JOIN club cl ON cl.club = cy.club
+						JOIN user u ON u.mail = cl.mail
+						WHERE p.id = :id AND u.nom = :nom AND u.prenom = :prenom";
+			$statement = $db->prepare($request);
+			$statement->bindParam(':id', $id, PDO::PARAM_INT);
+			$statement->bindParam(':nom', $nom, PDO::PARAM_STR, 20);
+			$statement->bindParam(':prenom', $prenom, PDO::PARAM_STR, 20);
+			$statement->execute();
+			$result = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+		} catch (PDOException $exception) {
+			error_log('Connection error: '.$exception->getMessage());
+			return false;
+		}
+		return $result;
+	}
+
+	# Fonction qui récupère toutes les informations de la course
+	function dbRecupOneCourse($db, $id) {
+		try {
+			$request = "SELECT * FROM course WHERE id=:id";
+			$statement = $db->prepare($request);
+			$statement->bindParam(':id', $id, PDO::PARAM_INT);
+			$statement->execute();
+			$result = $statement->fetch(PDO::FETCH_ASSOC);
+
+		} catch (PDOException $exception) {
+			error_log('Connection error: '.$exception->getMessage());
+			return false;
+		}
+		return $result;
+	}
+
 	#
 	#	gestion_coureur
 	#

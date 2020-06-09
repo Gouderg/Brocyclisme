@@ -30,10 +30,15 @@
 				
 			<h1 style="font-weight: bold; position: absolute; left: 35%;">Brocyclisme</h1>
 			<a class="nav-link"  style="position: absolute; right: 0.5%;"> <img src="../img/user.png" width="10%">
-			<a class="nav-link"  style="position: absolute; right: 10%;" id="nom">Hunter</a>
-			<a class="nav-link"  style="position: absolute; right: 15%;" id="prenom">Rick</a>
+			<a class="nav-link"  style="position: absolute; right: 10%;" id="nom"></a>
+			<a class="nav-link"  style="position: absolute; right: 15%;" id="prenom"></a>
 		</div>
 	</nav>
+
+	<script>
+		$('#nom').html(Cookies.get('nom'));
+		$('#prenom').html(Cookies.get('prenom'));
+	</script>
 </header>
 
 <br><br>

@@ -6,6 +6,10 @@
 </head>	
 <body>
 	<?php require "header.html" ?>
+	<script>
+		Cookies.set('nom', 'Hunter', { sameSite: 'lax' });
+		Cookies.set('prenom', 'Rick', { sameSite: 'lax' });
+	</script>
 	
 	<div class="col-md-12">
 		<h1 style="text-align: center; text-decoration: underline; font-family: verdana;">Le gestionnaire numéro 1 du cyclisme </h1>
