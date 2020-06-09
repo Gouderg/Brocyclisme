@@ -17,9 +17,9 @@
 		<form>
 			<div class="input-group mb-3">
 				<div class="input-group-prepend">
-					<span class="input-group-text">Login</span>
+					<span class="input-group-text">Email</span>
 				</div>
-				<input type="text" class="form-control" id="login" placeholder="Entrez votre login" autofocus required>
+				<input type="text" class="form-control" id="login" placeholder="Entrez votre email" autofocus required>
 			</div>
 			<div class="input-group mb-3">
 				<div class="input-group-prepend">

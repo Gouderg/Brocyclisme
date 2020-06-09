@@ -9,7 +9,7 @@ function validateLogin(event) {
 	Cookies.remove('token');	//Évite une erreur
 	Cookies.set('login', $('#login').val(), { sameSite: 'lax'});
 	Cookies.set('password', $('#password').val(), { sameSite: 'lax'});
-	ajaxRequest('GET', 'php/request.php/authenticate', validToken);
+	ajaxRequest('GET', 'prj-cir2-web-api.monsposte/php/request.php/authenticate', validToken);
 }
 
 function validToken(token) {
