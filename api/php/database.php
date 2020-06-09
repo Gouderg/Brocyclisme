@@ -57,13 +57,14 @@
 	}
 
 
-	function dbRequestInfos($db) {
+	function dbRequestInfos($db,$num_licence) {
 		try {
 
-			$request = "SELECT * FROM cycliste";
+			$request = "SELECT * FROM cycliste where num_licence = :num_licence";
 			$statement = $db->prepare($request);
+			$statement->bindParam(':num_licence', $num_licence, PDO::PARAM_INT);
 			$statement->execute();
-			$result = $statement->fetchAll(PDO::FETCH_ASSOC);
+			$result = $statement->fetch(PDO::FETCH_ASSOC);
 	
 		} catch (PDOException $exception) {
 		error_log('Request error: '.$exception->getMessage());

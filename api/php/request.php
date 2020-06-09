@@ -13,7 +13,11 @@
 	// On récupère les informations envoyées par l'url
 	$requestMethod = $_SERVER['REQUEST_METHOD'];
 	$request = explode('/',substr($_SERVER['PATH_INFO'], 1));
-	$requestRessource = array_shift($request);
+	$requestRessource = array_shift($request);    
+	$id= array_shift($request);  
+	if ($id == '') {
+   		$id = NULL;
+  	}
 	$data = false;
 	
 
@@ -29,12 +33,15 @@
 	} else if ($requestRessource == 'cyclistes') {
 
 		// On récupère des informations sur les cyclistes
-		encodeData(dbRequestCyclistes($db), $requestMethod);
+		if ($id == NULL) {
 
-	} else if($requestRessource =='cycliste'){
-		//on recupère les info d'un cycliste 
-		encodeData(dbRequestInfos($db), $requestMethod);
-	}
+			encodeData(dbRequestCyclistes($db), $requestMethod);
+		} else {
+			encodeData(dbRequestInfos($db, $id), $requestMethod);
+		}
+
+	} 
+
 
 
 	header('HTTP/1.1 404 Bad request');

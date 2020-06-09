@@ -22,6 +22,7 @@
                                
                                <div id="infos" class="container" style="display: none;">
                                	<h1> INFORMATIONS DU CYCLISTE</h1>
+                               	
                                </div> 
                             
                             
