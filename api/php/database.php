@@ -1,5 +1,5 @@
 <?php
-	require_once('../php/constante.php');
+	require_once('constante.php');
 
 	# Fonction de connexion à la base de données
 	function dbConnect() {
@@ -11,5 +11,20 @@
 			return false;
 		}
 		return $db;
+	}
+
+	# Récupère la liste des courses disponibles avec des informations suplémentaires
+	function dbRecupCourse($db) {
+		try {
+			$request = "SELECT * FROM course";
+			$statement = $db->prepare($request);
+			$statement->execute();
+			$result = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+		} catch (PDOException $exception) {
+			error_log('Connection error: '.$exception->getMessage());
+			return false;
+		}
+		return $result; 
 	}
 ?>

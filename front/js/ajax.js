@@ -7,11 +7,11 @@ function ajaxRequest(type, url, callback, data = null) {
 	}
 	xhr.open(type, url);
 
-	if (Cookies.get('token') == undefined) {
+	/*if (Cookies.get('token') == undefined) {
 		xhr.setRequestHeader('Authorization', 'Basic ' + btoa(Cookies.get('login') + ':' + Cookies.get('password')));
 	} else {
 		xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('token'));
-	}
+	}*/
 	xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 	console.log(url);
 

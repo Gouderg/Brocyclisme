@@ -14,9 +14,16 @@
 	$requestMethod = $_SERVER['REQUEST_METHOD'];
 	$request = explode('/',substr($_SERVER['PATH_INFO'], 1));
 	$requestRessource = array_shift($request);
+	$data = false;
 
 	if ($requestRessource == 'authenticate') {
 		encodeData(authenticate($db), $requestMethod);
+
+	} else if ($requestRessource == 'course') {
+
+		// On récupère la liste des courses disponibles avec quelques information
+		$data = dbRecupCourse($db);
+		encodeData($data, $requestMethod);
 	}
 
 

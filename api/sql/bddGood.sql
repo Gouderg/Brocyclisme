@@ -22,7 +22,7 @@ CREATE DATABASE projet_web_IV_PL;
 -- Create user
 --
 CREATE USER 'leopoldUSER'@'localhost' IDENTIFIED BY 'phpInMyHeart333!!!';
-GRANT ALL PRIVILEGES ON projetIV_PL.* TO 'leopoldUSER'@'localhost';
+GRANT ALL PRIVILEGES ON projet_web_IV_PL.* TO 'leopoldUSER'@'localhost';
 FLUSH PRIVILEGES;
 
 USE projet_web_IV_PL;
@@ -184,7 +184,8 @@ CREATE TABLE course(
 
 INSERT INTO `course` (`id`, `libelle`, `date`, `nb_tour`, `distance`, `nb_coureur`, `longueur_tour`, `club`) VALUES
 (1, 'Course Cycliste FSGT à GOUESNOU (29)', '2019-05-20', 12, 87.6, 50, 7.3, 'AC GOUESNOU');
-
+INSERT INTO `course` (`id`, `libelle`, `date`, `nb_tour`, `distance`, `nb_coureur`, `longueur_tour`, `club`) VALUES
+(2, 'Course Cycliste FSGT à Brest (29)', '2020-07-20', 12, 87.6, 50, 7.3, 'AC GOUESNOU');
 
 -- 
 -- Table: participe
@@ -193,10 +194,10 @@ INSERT INTO `course` (`id`, `libelle`, `date`, `nb_tour`, `distance`, `nb_coureu
 CREATE TABLE participe(
         mail    Varchar (100) NOT NULL ,
         id      Int NOT NULL ,
-        place   Varchar (15) NOT NULL ,
-        dossart Varchar (15) NOT NULL ,
-        point   Int NOT NULL ,
-        temps   Time NOT NULL
+        place   Varchar (15) NULL ,
+        dossart Varchar (15) NULL ,
+        point   Int NULL ,
+        temps   Time NULL
 	,CONSTRAINT participe_PK PRIMARY KEY (mail,id)
 
 	,CONSTRAINT participe_cycliste_FK FOREIGN KEY (mail) REFERENCES cycliste(mail)
