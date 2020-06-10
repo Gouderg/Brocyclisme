@@ -7,8 +7,8 @@
 <body>
 	<?php require "header.html" ?>
 	<script>
-		Cookies.set('nom', 'Hunter', { sameSite: 'lax' });
-		Cookies.set('prenom', 'Rick', { sameSite: 'lax' });
+		Cookies.set('nom', 'Egeri', { sameSite: 'lax' });
+		Cookies.set('prenom', 'Tom', { sameSite: 'lax' });
 	</script>
 	
 	<div class="col-md-12">

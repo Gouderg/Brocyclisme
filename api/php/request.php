@@ -19,7 +19,13 @@
 
 	$data = false;
 	
+	if ($requestMethod == 'OPTIONS')
+		{
+		header('HTTP/1.1 200 OK');
+		exit;
+		}
 
+	//var_dump($_SERVER);
 
 	if ($requestRessource == 'authenticate') {
 		encodeData(authenticate($db), $requestMethod);
@@ -79,11 +85,22 @@
 
 		// On récupère des informations sur les cyclistes
 		if ($id == NULL) {
-			encodeData(dbRequestCyclistes($db), $requestMethod);
+			encodeData(dbRequestCyclistes($db), $requestMethod);		// si num_licene null on renvoie tous les cyclistes
 		} else {
-			encodeData(dbRequestInfos($db, $id), $requestMethod);
+			encodeData(dbRequestInfos($db, $id), $requestMethod);	//sinon on renvoie le cycliste correspondant au numéro de licence 
 		}
+		switch ($requestMethod) {									//cas d'une methode PUT
+			case 'PUT':
+			parse_str(file_gets_contents('php://input'), $_PUT);
+			if(isset($_PUT['nom']) && isset($_PUT['prenom']) && isset($_PUT['num_licence']) && isset($_PUT['club']) && isset($_PUT['code_insee'])  && isset($_PUT['valide'])  && $id != NULL) { 									// si l'id n'est pas NULL et que tous les attributs existent
+				
+				$data =dbModifyinfo($db,  $_PUT['nom'], $_PUT['prenom'], $_PUT['club'], $_PUT['valide'], $_PUT['code_insee'], $id, $_PUT['num_licence']); //on execute la fonction dbModify qui permet de modifier les informations du cycliste 
+				
+				}
 
+				
+				break;
+		}
 	} 
 
 
