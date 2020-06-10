@@ -61,7 +61,16 @@
 		} else {
 			encodeData(dbRequestInfos($db, $id), $requestMethod);
 		}
+		switch ($requestMethod) {
+			case 'PUT':
+			parse_str(file_gets_contents('php://input'), $_PUT);
+			if(isset($_PUT['nom']) && isset($_PUT['prenom']) && isset($_PUT['mail']) && isset($_PUT['club']) && isset($_PUT['code_insee']) && isset($_PUT['num_licence']) && isset($_PUT['valide'])  && $id != NULL) {
 
+				$data =dbModifyinfo($db,  $_PUT['nom'], $_PUT['prenom'], $_PUT['club'], $_PUT['valide'], $_PUT['code_insee'], $id, $_PUT['mail']);
+				}
+				
+				break;
+		}
 	} 
 
 

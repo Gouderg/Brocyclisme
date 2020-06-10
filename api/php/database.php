@@ -156,6 +156,26 @@
 	}
 
 
+	function dbModifyInfos($db, $nom, $prenom, $club, $valide, $code_insee, $num_licence, $mail) {
+        try {
+            $request = 'UPDATE cycliste SET nom=:nom, prenom=:prenom, club=:club, valide=:valide, code_insee=:code_insee, num_licence=:num_licence, mail=:mail WHERE num_licence=:num_licence';
+            $statement = $db->prepare($request);
+            $statement->bindParam(':nom', $nom, PDO::PARAM_STR, 255);
+            $statement->bindParam(':prenom', $comment, PDO::PARAM_STR, 255);
+            $statement->bindParam(':club', $comment, PDO::PARAM_STR, 255);
+            $statement->bindParam(':valide', $id, PDO::PARAM_INT);
+            $statement->bindParam(':code_insee', $id, PDO::PARAM_INT);
+            $statement->bindParam(':num_licence', $id, PDO::PARAM_INT);
+            $statement->bindParam(':mail', $comment, PDO::PARAM_STR, 255);
+            $statement->execute();
+        } catch (PDOException $exception) {
+            error_log('Request error: '.$exception->getMessage());
+            return false;
+        }
+        return true;
+    }
+
+
 	#Fonction qui recupere les infos pour la fiche du cycliste 
 	/*function dbRequestInfos($db, $num_licence) {
 		try {
