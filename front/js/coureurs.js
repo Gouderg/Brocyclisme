@@ -2,11 +2,11 @@
 ajaxRequest('GET','http://prj-cir2-web-api.monposte/php/request.php/cyclistes', chargementCoureurs);
 
 
-
-
-
 function chargementCoureurs(cyclistes){
 	console.log(cyclistes);
+
+	
+
 	let listeCycliste = '<table class="table">' +
 						'<thead>' +
 						'<tr>' +
@@ -20,7 +20,7 @@ function chargementCoureurs(cyclistes){
 						'</thead>' +
 						'<tbody>';
 	cyclistes.forEach(function(elt) {
-		listeCycliste += '<tr id="'+elt.num_licence+'"><th>'+elt.nom+'</th>' +
+		listeCycliste += '<tr id="'+elt.mail+'"><th>'+elt.nom+'</th>' +
 					  	 '<td>'+elt.prenom+'</td>' +
 					   	 '<td>'+elt.club+'</td>' +
 					   	 '<td>' + elt.num_licence + '</td>'+
@@ -35,7 +35,7 @@ function chargementCoureurs(cyclistes){
 	$('#listeCycliste').on('click','#info', () => {
 		let id = $(event.target).closest('tr').attr('id');
 		console.log('Information :' + id);
-		ajaxRequest('GET','http://prj-cir2-web-api.monposte/php/request.php/cyclistes/ ' + id , infosCoureur);
+		ajaxRequest('GET','http://prj-cir2-web-api.monposte/php/request.php/cyclistes/' + id , infosCoureur);
 
 	});
 }
@@ -44,7 +44,7 @@ function chargementCoureurs(cyclistes){
 
 function infosCoureur(cycliste){
 
-	console.log(cycliste);
+	console.log(cycliste['mail']);
 
 	let Cycliste = '<br><br><div class="container"><h4>Le Cycliste</h4><br>';
     	Cycliste  += '<table class="table">' +
@@ -63,7 +63,7 @@ function infosCoureur(cycliste){
 						'</thead>' +
 						'<tbody>';
 
-		Cycliste += '<tr id="'+cycliste['num_licence']+'"><th>'+cycliste['nom']+'</th>' +
+		Cycliste += '<tr id="'+cycliste['mail']+'"><th>'+cycliste['nom']+'</th>' +
 					  	 '<td>'+cycliste['prenom']+'</td>' +
 					   	 '<td>'+cycliste['club']+'</td>' +
 					   	 '<td>'+cycliste['valide'] +'</td>' +
@@ -98,15 +98,24 @@ function modifCoureur(cycliste){
 	$("#code").val(cycliste['code_insee']);
 	$("#num_li").val(cycliste['num_licence']);
 	$("#valide").val(cycliste['valide']);
-	let mail =$("#mail").val(cycliste['mail']);
-	let nom =$("#nomI").val(cycliste['nom']);
-	let prenom=$("#prenomI").val(cycliste['prenom']);
-	let club=$("#club").val(cycliste['club']);
-	let code =$("#code").val(cycliste['code_insee']);
-	let num_li=$("#num_li").val(cycliste['num_licence']);
-	let valide=$("#valide").val(cycliste['valide']);
-	$("#update").on('click','#update', ()=>{
-		ajaxRequest('GET','http://prj-cir2-web-api.monposte/php/request.php/cyclistes/ ' + mail+ nom +prenom +club +code +num_li + valide, infosCoureur);
-	});
-
+	
+	$("#update").submit(test);
 }
+
+
+function test (event){
+		
+		event.preventDefault();		
+		let mail =$("#mail").val();
+		let nom =$("#nomI").val();
+		let prenom=$("#prenomI").val();
+		let club=$("#club").val();
+		let code =$("#code").val();
+		let num_li=$("#num_li").val();
+		let valide=$("#valide").val();
+		ajaxRequest('PUT', 'http://prj-cir2-web-api.monposte/php/request.php/cyclistes/' + mail, () =>
+	   		 {
+	      		ajaxRequest('GET','http://prj-cir2-web-api.monposte/php/request.php/cyclistes', chargementCoureurs);
+	 		   }, 'nom=' +nom +'&prenom=' +prenom +'&club=' +club +'&valide=' +valide +'&code=' + code + '&num_licence=' + num_li);
+	};
+

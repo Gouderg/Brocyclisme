@@ -18,7 +18,7 @@
 	<div id="infos" class="container" style="display: none;">
 	</div>
 	<section id= "cyclisteInfos" class="container" style="display: none;">
-		<form>
+		<form id="update">
   			<div class="form-row">
 					<div class="form-group col-md-6">
 						<label for="mail">Email</label>

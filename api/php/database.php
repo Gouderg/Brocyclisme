@@ -139,12 +139,12 @@
 	}
 
 
-	function dbRequestInfos($db,$num_licence) {
+	function dbRequestInfos($db,$mail) {
 		try {
 
-			$request = "SELECT * FROM cycliste where num_licence = :num_licence";
+			$request = "SELECT * FROM cycliste where mail=:mail";
 			$statement = $db->prepare($request);
-			$statement->bindParam(':num_licence', $num_licence, PDO::PARAM_INT);
+			$statement->bindParam(':mail', $mail, PDO::PARAM_STR,50);
 			$statement->execute();
 			$result = $statement->fetch(PDO::FETCH_ASSOC);
 	
@@ -158,15 +158,15 @@
 
 	function dbModifyInfos($db, $nom, $prenom, $club, $valide, $code_insee, $num_licence, $mail) {
         try {
-            $request = 'UPDATE cycliste SET nom=:nom, prenom=:prenom, club=:club, valide=:valide, code_insee=:code_insee, num_licence=:num_licence, mail=:mail WHERE num_licence=:num_licence';
+            $request = 'UPDATE cycliste SET nom=:nom, prenom=:prenom, club=:club, valide=:valide, code_insee=:code_insee, num_licence=:num_licence, mail=:mail WHERE mail=:mail';
             $statement = $db->prepare($request);
             $statement->bindParam(':nom', $nom, PDO::PARAM_STR, 255);
-            $statement->bindParam(':prenom', $comment, PDO::PARAM_STR, 255);
-            $statement->bindParam(':club', $comment, PDO::PARAM_STR, 255);
-            $statement->bindParam(':valide', $id, PDO::PARAM_INT);
-            $statement->bindParam(':code_insee', $id, PDO::PARAM_INT);
-            $statement->bindParam(':num_licence', $id, PDO::PARAM_INT);
-            $statement->bindParam(':mail', $comment, PDO::PARAM_STR, 255);
+            $statement->bindParam(':prenom', $prenom, PDO::PARAM_STR, 255);
+            $statement->bindParam(':club', $club, PDO::PARAM_STR, 255);
+            $statement->bindParam(':valide', $valide, PDO::PARAM_INT);
+            $statement->bindParam(':code_insee', $code_insee, PDO::PARAM_INT);
+            $statement->bindParam(':num_licence', $num_licence, PDO::PARAM_INT);
+            $statement->bindParam(':mail', $mail, PDO::PARAM_STR, 255);
             $statement->execute();
         } catch (PDOException $exception) {
             error_log('Request error: '.$exception->getMessage());
