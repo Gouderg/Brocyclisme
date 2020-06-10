@@ -2,9 +2,11 @@
 <html lang="fr">
 <head>
 	<meta charset="utf-8">
+	<title>Brocyclisme</title>
+
+	<script type="text/javascript" src="../js/constantes.js" defer></script>
 	<script type="text/javascript" src="../js/ajax.js" defer></script>
 	<script type="text/javascript" src="../js/coureurs.js" defer></script>
-	<title>Brocyclisme</title>
 </head>	
 <body>
 	<?php require "header.html" ?>
@@ -13,10 +15,9 @@
 		<br>
 		<div id="listeCycliste" class="container"></div>
 	</section>
-	<br>
-	<br>                   
-	<div id="infos" class="container" style="display: none;">
-	</div>
+	<br><br>
+
+	<section id="infos" class="container" style="display: none;"></section>
 	<section id= "cyclisteInfos" class="container" style="display: none;">
 		<form id="update">
   			<div class="form-row">
@@ -48,14 +49,14 @@
 					<label for="code">Code Insee</label>
 					<input type="int" id="code" class="form-control">
 				</div>
-			<div class="form-group col-md-4">
-				<label for="num_li">Numero de Licence</label>
-				<input type="int" id="num_li" class="form-control">
-			</div>																		 
+				<div class="form-group col-md-4">
+					<label for="num_li">Numero de Licence</label>
+					<input type="int" id="num_li" class="form-control">
+				</div>
+			</div>
 			<button type="submit" id="update" class="btn btn-primary">Update</button>
 		</form>
-	</section>
-																		
+	</section>															
 
 	<?php require "footer.html" ?>
 

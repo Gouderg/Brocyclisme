@@ -32,3 +32,12 @@ SELECT valide FROM cycliste WHERE nom = "ABIVEN" AND prenom = "Christophe" AND m
 
 INSERT INTO participe (mail, id, dossart) VALUES ("dj@taem.com", 2, 7);
 DELETE FROM participe WHERE id = 2;
+
+
+### Vérifie si un cycliste fait partie du club du user
+
+SELECT cy.num_licence
+FROM cycliste cy
+JOIN club cl ON cl.club = cy.club
+JOIN user u ON u.mail = cl.mail
+WHERE u.nom = "SAILEC" AND u.prenom = "Tom" AND cy.mail = "tb@opf.com";

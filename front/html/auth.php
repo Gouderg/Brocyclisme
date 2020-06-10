@@ -3,6 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<title>Brocyclisme</title>
+	
 	<script type="text/javascript" src="../js/authentication.js" defer></script>
 	<script type="text/javascript" src="../js/ajax.js" defer></script>
 

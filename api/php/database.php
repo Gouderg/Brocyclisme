@@ -148,6 +148,28 @@
 		return $result;
 	}
 
+	# Fonction qui vérifie si un coureur fait partie du club du user
+	function dbVerifClub($db, $nom, $prenom, $mail) {
+		try {
+			$request = "SELECT cy.num_licence
+						FROM cycliste cy
+						JOIN club cl ON cl.club = cy.club
+						JOIN user u ON u.mail = cl.mail
+						WHERE u.nom = :nom AND u.prenom = :prenom AND cy.mail = :mail";
+			$statement = $db->prepare($request);
+			$statement->bindParam(':nom', $nom, PDO::PARAM_STR, 150);
+			$statement->bindParam(':prenom', $prenom, PDO::PARAM_STR, 150);
+			$statement->bindParam(':mail', $mail, PDO::PARAM_STR, 100);
+			$statement->execute();
+			$result = $statement->fetch();
+
+		} catch (PDOException $exception) {
+			error_log('Connection error: '.$exception->getMessage());
+			return false;
+		}
+		return $result;
+	}
+
 	# Fonction qui vérifie si le participants n'est pas déjà inscrit
 	function dbVerifParticipationCycliste($db, $mail, $id) {
 		try {
@@ -180,6 +202,8 @@
 		}
 		return true;
 	}
+
+
 
 	#
 	#	gestion_coureur
@@ -224,23 +248,23 @@
 
 
 	function dbModifyInfos($db, $nom, $prenom, $club, $valide, $code_insee, $num_licence, $mail) {
-        try {
-            $request = 'UPDATE cycliste SET nom=:nom, prenom=:prenom, club=:club, valide=:valide, code_insee=:code_insee, num_licence=:num_licence, mail=:mail WHERE mail=:mail';
-            $statement = $db->prepare($request);
-            $statement->bindParam(':nom', $nom, PDO::PARAM_STR, 255);
-            $statement->bindParam(':prenom', $prenom, PDO::PARAM_STR, 255);
-            $statement->bindParam(':club', $club, PDO::PARAM_STR, 255);
-            $statement->bindParam(':valide', $valide, PDO::PARAM_INT);
-            $statement->bindParam(':code_insee', $code_insee, PDO::PARAM_INT);
-            $statement->bindParam(':num_licence', $num_licence, PDO::PARAM_INT);
-            $statement->bindParam(':mail', $mail, PDO::PARAM_STR, 255);
-            $statement->execute();
-        } catch (PDOException $exception) {
-            error_log('Request error: '.$exception->getMessage());
-            return false;
-        }
-        return true;
-    }
+		try {
+			$request = 'UPDATE cycliste SET nom=:nom, prenom=:prenom, club=:club, valide=:valide, code_insee=:code_insee, num_licence=:num_licence, mail=:mail WHERE mail=:mail';
+			$statement = $db->prepare($request);
+			$statement->bindParam(':nom', $nom, PDO::PARAM_STR, 255);
+			$statement->bindParam(':prenom', $prenom, PDO::PARAM_STR, 255);
+			$statement->bindParam(':club', $club, PDO::PARAM_STR, 255);
+			$statement->bindParam(':valide', $valide, PDO::PARAM_INT);
+			$statement->bindParam(':code_insee', $code_insee, PDO::PARAM_INT);
+			$statement->bindParam(':num_licence', $num_licence, PDO::PARAM_INT);
+			$statement->bindParam(':mail', $mail, PDO::PARAM_STR, 255);
+			$statement->execute();
+		} catch (PDOException $exception) {
+			error_log('Request error: '.$exception->getMessage());
+			return false;
+		}
+		return true;
+	}
 
 
 	#Fonction qui recupere les infos pour la fiche du cycliste 

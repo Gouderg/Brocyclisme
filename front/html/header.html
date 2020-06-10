@@ -22,24 +22,23 @@
 				<img src="../img/Menu.png" width="50%">
 			</a>
 			<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-				<a class="dropdown-item" href="../html/gestion_coureurs.php">Gestion des coureurs </a>
+				<a class="dropdown-item" href="../html/accueil.php">Accueil</a>
+				<a class="dropdown-item" href="../html/gestion_coureurs.php">Gestion des coureurs</a>
 				<a class="dropdown-item" href="../html/gestion_courses.php">Gestion des courses</a>
-				<a class="dropdown-item" href="../html/classement.php">Classement</a>
 			</div>
 			<div class="text-center">
 				<a class="nav-link" > <img src="../img/velo.png" width="10%"> </a>
 			</div>
 				
 			<h1 style="font-weight: bold; position: absolute; left: 35%;">Brocyclisme</h1>
-			<a class="nav-link"  style="position: absolute; right: 0.5%;"> <img src="../img/user.png" width="10%">
-			<a class="nav-link"  style="position: absolute; right: 10%;" id="nom"></a>
-			<a class="nav-link"  style="position: absolute; right: 15%;" id="prenom"></a>
+			<a class="nav-link"  style="position: absolute;right: 0.5%;"> <img src="../img/user.png" width="10%">
+			
+			<a class="nav-link"  style="right: 10%;" id="user"></a>
 		</div>
 	</nav>
 
 	<script>
-		$('#nom').html(Cookies.get('nom'));
-		$('#prenom').html(Cookies.get('prenom'));
+		$('#user').html(Cookies.get('nom') + ' ' + Cookies.get('prenom'));
 	</script>
 </header>
 

@@ -57,23 +57,28 @@
 			break;
 
 			case 'POST':
-				if (isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['mail']) && 
-					isset($_POST['dossard']) && isset($_POST['id'])) {
+				if (isset($_POST['nomC']) && isset($_POST['prenomC']) && isset($_POST['mail']) && 
+					isset($_POST['dossard']) && isset($_POST['id']) && isset($_POST['nomU']) && isset($_POST['prenomU'])) {
+
+					$error = false;
+
 					// On vérifie si le nom existe et si l'adresse mail existe et si le cycliste peut participer. 
-					if (dbVerifAuteur($db, strip_tags($_POST['nom']), strip_tags($_POST['prenom']), strip_tags($_POST['mail']))) {
-						// On vérifie si le dossard n'est pas pris ou si le participant n'est pas déjà inscrit
-						if (!dbVerifDossard($db, intval($_POST['dossard'])) && !dbVerifParticipationCycliste($db, strip_tags($_POST['mail']), intval($_POST['id']))) {
-							//SI tout est bon, on peut inscrire le cycliste à la course
-							$data = dbAddCourseParticipants($db, strip_tags($_POST['mail']), intval($_POST['dossard']), 
-															intval($_POST['id']));
-							
-						} else {
-							echo "Fesse";
-						}	
+					if (dbVerifAuteur($db, strip_tags($_POST['nomC']), strip_tags($_POST['prenomC']), strip_tags($_POST['mail']))) {
+						
+						// On vérifie si le cycliste appartient au club du user
+						if(dbVerifClub($db, strip_tags($_POST['nomU']), strip_tags($_POST['prenomU']), strip_tags($_POST['mail']))) {
+
+							// On vérifie si le dossard n'est pas pris ou si le participant n'est pas déjà inscrit
+							if (!dbVerifDossard($db, intval($_POST['dossard'])) && 
+								!dbVerifParticipationCycliste($db, strip_tags($_POST['mail']), intval($_POST['id']))) {
 								
-					} else {
-						echo "Mega defaite";
-					}
+								//SI tout est bon, on peut inscrire le cycliste à la course
+								$data = dbAddCourseParticipants($db, strip_tags($_POST['mail']), intval($_POST['dossard']), 
+																intval($_POST['id']));
+							} else {$error = 3;}
+						} else {$error = 2;}
+					} else {$error = 1;}
+					if ($error) {$data['error'] = $error;}
 				}
 
 			break;
