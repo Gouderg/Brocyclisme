@@ -48,7 +48,29 @@
 				} else {
 					$data = dbRecupCourse($db);
 				}
-				break;
+			break;
+
+			case 'POST':
+				if (isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['mail']) && 
+					isset($_POST['dossard']) && isset($_POST['id'])) {
+					// On vérifie si le nom existe et si l'adresse mail existe et si le cycliste peut participer. 
+					if (dbVerifAuteur($db, strip_tags($_POST['nom']), strip_tags($_POST['prenom']), strip_tags($_POST['mail']))) {
+						// On vérifie si le dossard n'est pas pris ou si le participant n'est pas déjà inscrit
+						if (!dbVerifDossard($db, intval($_POST['dossard'])) && !dbVerifParticipationCycliste($db, strip_tags($_POST['mail']), intval($_POST['id']))) {
+							//SI tout est bon, on peut inscrire le cycliste à la course
+							$data = dbAddCourseParticipants($db, strip_tags($_POST['mail']), intval($_POST['dossard']), 
+															intval($_POST['id']));
+							
+						} else {
+							echo "Fesse";
+						}	
+								
+					} else {
+						echo "Mega defaite";
+					}
+				}
+
+			break;
 		}
 		// On encode en json avec le bon code 
 		encodeData($data, $requestMethod);

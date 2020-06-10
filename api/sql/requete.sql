@@ -25,3 +25,10 @@ JOIN cycliste cy ON p.mail = cy.mail
 JOIN club cl ON cl.club = cy.club
 JOIN user u ON u.mail = cl.mail
 WHERE p.id = 1 AND u.nom = "Egeri" AND u.prenom = "Tom";
+
+
+###
+SELECT valide FROM cycliste WHERE nom = "ABIVEN" AND prenom = "Christophe" AND mail = "ac@fgt.com";
+
+INSERT INTO participe (mail, id, dossart) VALUES ("dj@taem.com", 2, 7);
+DELETE FROM participe WHERE id = 2;

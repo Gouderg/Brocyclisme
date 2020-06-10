@@ -17,9 +17,37 @@
 	</section>
 	
 	<br><br><br>
-	<section class="container" id="Information" style="display: none;"></section>
-	<section class="container" id="Inscription" style="display: none;"></section>
-	<section class="container" id="Classement" style="display: none;"></section>
+	<section class="container" id="information" style="display: none;"></section>
+	<section class="container" id="inscription" style="display: none;">
+		<h4 id="titreInsc"></h4>
+		<hr>
+		<form id="btnFormInscrip">
+			<div class="form-row">
+				<div class="form-group col-md-6">
+					<label for="nomI">Nom</label>
+					<input type="text" class="form-control" id="nomI" placeholder="Nom" autofocus required>
+				</div>
+				<div class="form-group col-md-6">
+					<label for="prenomI">Prenom</label>
+					<input type="text" class="form-control" id="prenomI" placeholder="Prenom" autofocus required>
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="form-group col-md-6">
+					<label for="email">Email</label>
+					<input type="email" class="form-control" id="email" placeholder="gh@fg.com" autofocus required>
+				</div>
+				<div class="form-group col-md-6">
+					<label for="dossard">Dossard</label>
+					<input type="number" class="form-control" id="dossard" min="0" max="100" placeholder="78" autofocus required>
+				</div>
+			</div>
+			<button type="submit" class="btn btn-primary pull-right">
+				<i class="fa fa-paper-plane"></i> Envoyer 
+			</button>
+		</form>
+	</section>
+	<section class="container" id="classement" style="display: none;"></section>
 
 	<?php require "footer.html" ?>
 </body>

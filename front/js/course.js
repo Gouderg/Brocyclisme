@@ -3,6 +3,10 @@
 ajaxRequest('GET', 'http://prj-cir2-web-api.monposte/php/request.php/course', loadCourse);
 
 function loadCourse(liste) {
+	$('#information').hide();
+	$('#inscription').hide();
+	$('#classement').hide();
+
 	let listeCourse = '<table class="table">' +
 						'<thead>' +
 						'<tr>' +
@@ -11,20 +15,23 @@ function loadCourse(liste) {
 						'<th scope="col">Club</th>' +
 						'<th scope="col"></th>' +
 						'<th scope="col"></th>' +
-						'<th scope="col"></th>' +
 						'</tr>' +
 						'</thead>' +
 						'<tbody>';
 
 	liste.forEach(function(elt) {
-		listeCourse += '<tr id="'+elt.id+'"><th scope="row">'+elt.libelle+'</th>' +
+		var temp = new Date(elt.date);
+		var now = new Date();
+		listeCourse += '<tr id="'+elt.id+'"><th id="'+elt.libelle+'" scope="row">'+elt.libelle+'</th>' +
 					   '<td>'+elt.date+'</td>' +
 					   '<td>'+elt.club+'</td>' +
-					   '<td><button type="submit" class="btn btn-primary" id="info">Information</button>' +
-					   '<td><button type="submit" class="btn btn-primary" id="inscrip">Inscription</button>' +
-					   '<td><button type="submit" class="btn btn-primary" id="classement">Classement</button>' +
-					   '</tr>';
-
+					   '<td><button type="submit" class="btn btn-primary" id="info">Information</button>';
+		if (temp - now > 0) {
+			listeCourse += '<td><button type="submit" class="btn btn-primary" id="inscrip">Inscription</button>';	
+		} else {
+			listeCourse += '<td><button type="submit" class="btn btn-primary" id="classement">Classement</button>';
+		}		   
+		listeCourse += '</tr>';
 	});
 	listeCourse += "</tbody></table>";
 	$('#listeCourse').html(listeCourse);
@@ -40,21 +47,20 @@ function loadCourse(liste) {
 
 	// Attente du click sur le mot inscription
 	$('#listeCourse').on('click','#inscrip', () => {
-		console.log('Inscription :' + $(event.target).closest('tr').attr("id"));
+		inscriptionCourse($(event.target).closest('tr').attr("id"));
 	});
 
 	// Attente du click sur le mot classment
 	$('#listeCourse').on('click','#classement', () => {
-		console.log('Classement :' + $(event.target).closest('tr').attr("id"));
 	});
 }
 
 // Fonction qui affiche la course détaillé et les participants en fonction de qui on est
 function loadInfo(info) {
 	// On switch active la bonne section et on désactive les mauvaises
-	$('#Information').show();
-	$('#Inscription').hide();
-	$('#Classement').hide();
+	$('#information').show();
+	$('#inscription').hide();
+	$('#classement').hide();
 
 	let listeCoureur = '<br><br><div class="container"><h4>Liste Cyclistes</h4><br>';
 	let descriptionCourse = "<div class='container'><h4>" + info.course.libelle + ": </h4><p>" +
@@ -76,7 +82,7 @@ function loadInfo(info) {
 						'<th scope="col">Licence</th>' +
 						'<th scope="col">Club</th>' +
 						'<th scope="col">Catégorie</th>' +
-						'<th scope="col">Dossart</th>' +
+						'<th scope="col">Dossard</th>' +
 						'</tr>' +
 						'</thead>' +
 						'<tbody>';
@@ -97,5 +103,29 @@ function loadInfo(info) {
 	listeCoureur += "</div>";
 
 	let total = descriptionCourse + listeCoureur;
-	$('#Information').html(total);
+	$('#information').html(total);
 }
+
+
+// Fonction qui propose une inscription d'une personne à une course
+function inscriptionCourse(idCourse) {
+	$('#information').hide();
+	$('#inscription').show();
+	$('#classement').hide();
+
+	Cookies.set('idCourse', idCourse, { sameSite: 'lax' });
+	
+	$('#titreInsc').html("Inscription à la course: " + idCourse);
+
+	$('#btnFormInscrip').submit(updateInfoCourse);
+}
+
+// Fonction qui récupère les informations et qui les update dans la base de donnée
+function updateInfoCourse(event) {
+	event.preventDefault();
+	 
+	
+	ajaxRequest('POST', 'http://prj-cir2-web-api.monposte/php/request.php/course/', () => {
+		ajaxRequest('GET', 'http://prj-cir2-web-api.monposte/php/request.php/course', loadCourse);
+	}, 'nom=' + $('#nomI').val() + '&prenom=' + $('#prenomI').val() + '&mail=' + $('#email').val() + '&dossard=' + $('#dossard').val() + '&id=' + Cookies.get('idCourse'));
+};

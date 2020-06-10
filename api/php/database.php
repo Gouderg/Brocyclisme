@@ -114,6 +114,73 @@
 		return $result;
 	}
 
+	# Fonction qui vérifie le mail concorde avec le nom et le prénom et si le monsieur peut participer
+	function dbVerifAuteur($db, $nom, $prenom, $mail) {
+		try {
+			$request = 'SELECT valide FROM cycliste WHERE nom=:nom AND prenom=:prenom AND mail=:mail';
+			$statement = $db->prepare($request);
+			$statement->bindParam(':nom', $nom, PDO::PARAM_STR, 50);
+			$statement->bindParam(':prenom', $prenom, PDO::PARAM_STR, 50);
+			$statement->bindParam(':mail', $mail, PDO::PARAM_STR, 50);
+			$statement->execute();
+			$result = $statement->fetch(); 
+
+		} catch (PDOException $exception) {
+			error_log('Connection error: '.$exception->getMessage());
+			return false;
+		}
+		return $result;
+	}
+
+	# Fonction qui vérifie si le dossard n'est pas pris
+	function dbVerifDossard($db, $dossard) {
+		try {
+			$request = 'SELECT * FROM participe WHERE dossart = :dossard';
+			$statement = $db->prepare($request);
+			$statement->bindParam(':dossard', $dossard, PDO::PARAM_INT);
+			$statement->execute();
+			$result = $statement->fetch();
+
+		} catch (PDOException $exception) {
+			error_log('Connection error: '.$exception->getMessage());
+			return false;
+		}
+		return $result;
+	}
+
+	# Fonction qui vérifie si le participants n'est pas déjà inscrit
+	function dbVerifParticipationCycliste($db, $mail, $id) {
+		try {
+			$request = 'SELECT * FROM participe WHERE mail = :mail AND id = :id';
+			$statement = $db->prepare($request);
+			$statement->bindParam(':mail', $mail, PDO::PARAM_STR, 50);
+			$statement->bindParam(':id', $id, PDO::PARAM_INT);
+			$statement->execute();
+			$result = $statement->fetch();
+
+		} catch (PDOException $exception) {
+			error_log('Connection error: '.$exception->getMessage());
+			return false;
+		}
+		return $result;
+	}	
+
+	# Fonction qui ajoute un participant à la course
+	function dbAddCourseParticipants($db, $mail, $dossard, $id) {
+		try {
+			$request = "INSERT INTO participe (mail, id, dossart) VALUES (:mail, :id, :dossard);";
+			$statement = $db->prepare($request);
+			$statement->bindParam(':mail', $mail, PDO::PARAM_STR, 50);
+			$statement->bindParam(':id', $id, PDO::PARAM_INT);
+			$statement->bindParam(':dossard', $dossard, PDO::PARAM_STR, 50);
+			$statement->execute();
+		} catch (PDOException $exception) {
+			error_log('Connection error: '.$exception->getMessage());
+			return false;
+		}
+		return true;
+	}
+
 	#
 	#	gestion_coureur
 	#

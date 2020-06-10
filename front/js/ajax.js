@@ -35,6 +35,7 @@ function ajaxRequest(type, url, callback, data = null) {
 				httpErrors(xhr.status);
 		}
 	};
+	console.log(data);
 	xhr.send(data);
 }
 
