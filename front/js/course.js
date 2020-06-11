@@ -226,8 +226,12 @@ function classCourse(classement){
 					   	 '</tr>';
 
 	});
-		   
+		   Classement += '<tr>' +'<td><button type="submit" class="btn btn-primary" id="print">Imprimer</button>' + '</tr>'
+
     
     $("#classementCourse").html(Classement);
+    $('#classementCourse').on('click','#print', () => {
 
+    	print(classement);
+	});
 }
