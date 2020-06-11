@@ -65,13 +65,16 @@ On rajoute ces deux lignes en dessous du localhost:
 	  127.0.0.1       prj-cir2-web-api.monposte
 	  127.0.0.1		  prj-cir2-web-front.monposte
 
-5) Enfin on retourne dans /etc/apache2/sites-available pour y effectuer les deux commandes suivantes:
- 
+5) Enfin on retourne dans /etc/apache2/sites-available 
 
+Dans votre terminal entrez les deux commandes suivantes:
+ 
 	  sudo nano prj-cir2-web-front.monposte.conf
 	  sudo nano prj-cir2-web-api.monposte.conf
 
 6) Pour finir on restart le serveur à l'aide de la commande suivante:
+
+(Toujours dans votre terminal)
 
 	  sudo service apache2 restart
 
