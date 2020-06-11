@@ -37,7 +37,7 @@ Guide :
 2) Créez deux répertoires prj-cir2-web-api.monposte.conf et prj-cir2-web-front.monposte.conf
 3) Ouvrez un editeur de texte et copiez les dfférentes commandes permettant la mise en place de votre virtual host:
 
-   prj-cir2-web-api.monposte.conf : (N'oubliez pas d'enregistrer !!)
+prj-cir2-web-api.monposte.conf : (N'oubliez pas d'enregistrer !!)
 	
 	  <VirtualHost *:80>
         ServerName prj-cir2-web-api.monposte
@@ -49,7 +49,7 @@ Guide :
 		</Directory>
 	  </VirtualHost>
 
-   prj-cir2-web-front.monposte.conf : (N'oubliez pas d'enregistrer !!)
+prj-cir2-web-front.monposte.conf : (N'oubliez pas d'enregistrer !!)
 	
 	 <VirtualHost *:80>
        	ServerName prj-cir2-web-front.monposte       
@@ -60,7 +60,7 @@ Guide :
 
 4) Puis il faut rajouter les hosts. Pour cela ouvrez le fichier etc/hosts à l'aide d'un éditeur de texte.
 
-   On rajoute ces deux lignes en dessous du localhost:	
+On rajoute ces deux lignes en dessous du localhost:	
 
 	  127.0.0.1       prj-cir2-web-api.monposte
 	  127.0.0.1		  prj-cir2-web-front.monposte
