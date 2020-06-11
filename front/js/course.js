@@ -34,13 +34,13 @@ function loadCourse(liste) {
 							'<td>'+elt.libelle+'</td>' +
 					   		'<td>'+elt.date+'</td>' +
 					   		'<td>'+elt.club+'</td>' +
-							'<td><button type="submit" class="btn btn-primary" id="btnInf">Information</button>';
+							'<td><button type="submit" class="btn btn-primary" id="btnInf">Information</button></td>';
 
 		// Si la course est passée, on propose le classement, si la course n'est pas passée, on propose l'inscription
 		if (temp - now > 0) {
-			listeCourse += '<td><button type="submit" class="btn btn-primary" id="btnInsc">Inscription</button>';	
+			listeCourse += '<td><button type="submit" class="btn btn-primary" id="btnInsc">Inscription</button></td>';	
 		} else {
-			listeCourse += '<td><button type="submit" class="btn btn-primary" id="btnClas">Classement</button>';
+			listeCourse += '<td><button type="submit" class="btn btn-primary" id="btnClas">Classement</button></td>';
 		}		   
 		listeCourse += '</tr>';
 	});
@@ -63,8 +63,9 @@ function loadCourse(liste) {
 		inscCourse($(event.target).closest('tr').attr("id"));
 	});
 
-	// Attente du click sur le mot classment
+	// Attente du click sur le mot classement
 	$('#listeCourse').on('click','#btnClas', () => {
+		console.log('Hello');
 	});
 }
 
@@ -164,6 +165,7 @@ function updateInfoCourse(event) {
 			$('#secError').html(msgError);
 		} else {
 			$('#secError').html('');
+			$('#formInsc')[0].reset();
 			ajaxRequest('GET', urlCir2+'/php/request.php/course', loadCourse);
 		}
 

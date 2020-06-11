@@ -210,21 +210,22 @@
 	#
 
 	# Fonction qui récupères des informations sur les cyclistes
-	function dbRequestCyclistes($db) {
+	function dbRequestCyclistes($db, $nom, $prenom) {
 		try {
-
 			$request = "SELECT y.nom, y.prenom, y.club, y.num_licence, y.mail
 						FROM cycliste y 
 						JOIN club c ON y.club = c.club
 						JOIN user u ON c.mail = u.mail
-						WHERE u.nom = 'Hunter' AND u.prenom = 'Rick'";
+						WHERE u.nom = :nom AND u.prenom = :prenom";
 			$statement = $db->prepare($request);
+			$statement->bindParam(':nom', $nom, PDO::PARAM_STR, 150);
+			$statement->bindParam(':prenom', $prenom, PDO::PARAM_STR, 150);
 			$statement->execute();
 			$result = $statement->fetchAll(PDO::FETCH_ASSOC);
 	
 		} catch (PDOException $exception) {
-		error_log('Request error: '.$exception->getMessage());
-		return false;
+			error_log('Request error: '.$exception->getMessage());
+			return false;
 		}
 		return $result;
 	}
@@ -240,24 +241,43 @@
 			$result = $statement->fetch(PDO::FETCH_ASSOC);
 	
 		} catch (PDOException $exception) {
-		error_log('Request error: '.$exception->getMessage());
-		return false;
+			error_log('Request error: '.$exception->getMessage());
+			return false;
+		}
+		return $result;
+	}
+
+	# Vérifie si le code Insee est présent dans la base de données
+	function dbVerifInsee($db, $code_insee) {
+		try {
+			$request = "SELECT code_postal FROM ville WHERE code_insee = :code_insee";
+			$statement = $db->prepare($request);
+			$statement->bindParam(':code_insee', $code_insee, PDO::PARAM_INT);
+			$statement->execute();
+			$result = $statement->fetch();
+
+		} catch (PDOException $exception) {
+			error_log('Request error: '.$exception->getMessage());
+			return false;
 		}
 		return $result;
 	}
 
 
-	function dbModifyInfos($db, $nom, $prenom, $club, $valide, $code_insee, $num_licence, $mail) {
+	function dbModifyInfos($db, $nom, $prenom, $num_licence, $code_insee, $date_naissance, $valide, $mail) {
 		try {
-			$request = 'UPDATE cycliste SET nom=:nom, prenom=:prenom, club=:club, valide=:valide, code_insee=:code_insee, num_licence=:num_licence, mail=:mail WHERE mail=:mail';
+			$request = 'UPDATE cycliste 
+						SET nom=:nom, prenom=:prenom, date_naissance=:date_naissance,
+							valide=:valide, code_insee=:code_insee, num_licence=:num_licence 
+						WHERE mail=:mail';
 			$statement = $db->prepare($request);
-			$statement->bindParam(':nom', $nom, PDO::PARAM_STR, 255);
-			$statement->bindParam(':prenom', $prenom, PDO::PARAM_STR, 255);
-			$statement->bindParam(':club', $club, PDO::PARAM_STR, 255);
+			$statement->bindParam(':nom', $nom, PDO::PARAM_STR, 50);
+			$statement->bindParam(':prenom', $prenom, PDO::PARAM_STR, 50);
+			$statement->bindParam(':date_naissance', $date_naissance, PDO::PARAM_STR);
 			$statement->bindParam(':valide', $valide, PDO::PARAM_INT);
 			$statement->bindParam(':code_insee', $code_insee, PDO::PARAM_INT);
 			$statement->bindParam(':num_licence', $num_licence, PDO::PARAM_INT);
-			$statement->bindParam(':mail', $mail, PDO::PARAM_STR, 255);
+			$statement->bindParam(':mail', $mail, PDO::PARAM_STR, 50);
 			$statement->execute();
 		} catch (PDOException $exception) {
 			error_log('Request error: '.$exception->getMessage());
@@ -265,20 +285,4 @@
 		}
 		return true;
 	}
-
-
-	#Fonction qui recupere les infos pour la fiche du cycliste 
-	/*function dbRequestInfos($db, $num_licence) {
-		try {
-			$request = 'SELECT nom, prenom, date_de_naissance FROM cycliste WHERE num_licence=:num_licence';
-			$statement = $db->prepare($request);
-			$statement->bindParam(':num_licence', $num_licence, PDO::PARAM_INT);
-			$statement->execute();
-			$result = $statement->fetchAll(PDO::FETCH_ASSOC);
-		} catch (PDOException $exception) {
-			error_log('Request error: '.$exception->getMessage());
-			return false;
-		}
-		return $result;
-	}*/
 ?>

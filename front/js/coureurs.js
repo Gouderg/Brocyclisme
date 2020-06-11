@@ -1,5 +1,5 @@
 'use strict';
-ajaxRequest('GET',urlCir2+'/php/request.php/cyclistes', chargementCoureurs);
+ajaxRequest('GET',urlCir2+'/php/request.php/cyclistes/?nom=' + Cookies.get('nom') + "&prenom=" + Cookies.get('prenom'), chargementCoureurs);
 
 
 function chargementCoureurs(cyclistes){
@@ -12,26 +12,28 @@ function chargementCoureurs(cyclistes){
 									'<th scope="col">Nom</th>' +
 									'<th scope="col">Prénom</th>' +
 									'<th scope="col">Club</th>' +
-									'<th scope="col">Numéro de License</th>' +
-									'<th scope="col">mails</th>' +
-									'<th scope="col"> Informations sur le Cycliste</th>' +
+									'<th scope="col">Numéro de Licence</th>' +
+									'<th scope="col">Email</th>' +
+									'<th scope="col">Informations sur le Cycliste</th>' +
 								'</tr>' +
 							'</thead>' +
 							'<tbody>';
 
 	cyclistes.forEach(function(elt) {
 		listeCycliste += '<tr id="'+elt.mail+'"><th>'+elt.nom+'</th>' +
-					  	 '<td>'+elt.prenom+'</td>' +
-					   	 '<td>'+elt.club+'</td>' +
+					  	 '<td>' + elt.prenom+'</td>' +
+					   	 '<td>' + elt.club+'</td>' +
 					   	 '<td>' + elt.num_licence + '</td>'+
 					   	 '<td>' + elt.mail +'</td>'+
-					   	 '<td><button type="submit" class="btn btn-primary" id="info">Fiches</button>' +
+					   	 '<td><button type="submit" class="btn btn-primary" id="info">Fiche</button>' +
 					   	 '</tr>';
 
 	});
     
     listeCycliste += "</tbody></table>";
 	$('#listeCycliste').html(listeCycliste);
+
+	// Attente du click sur le bouton infomartion
 	$('#listeCycliste').on('click','#info', () => {
 		let id = $(event.target).closest('tr').attr('id');
 		console.log('Information :' + id);
@@ -89,40 +91,53 @@ function modifCoureur(cycliste){
 	$("#infos").hide();
 	$("#cyclisteInfos").show();
 
+	Cookies.set('mail', cycliste.mail, { sameSite: 'lax' });
+
 	// On prérempli le formulaire avec les données existantes
-	$("#mail").val(cycliste['mail']);
-	$("#nomI").val(cycliste['nom']);
-	$("#prenomI").val(cycliste['prenom']);
-	$("#club").val(cycliste['club']);
-	$("#code").val(cycliste['code_insee']);
-	$("#num_li").val(cycliste['num_licence']);
-	$("#valide").val(cycliste['valide']);
-	
+	for (let [key1, value1] of Object.entries(cycliste)) {
+		for (let [key2, value2] of Object.entries(cycliste)) {
+			if (key1 == $('#'+key2).attr('id')) $('#'+key2).val(value2);
+		}
+	}
 	$("#update").submit(updateCoureur);
 }
 
 // Fonction qui update la fiche d'un coureur
 function updateCoureur(event){
 
-	event.preventDefault();		
-	let mail = $("#mail").val();
-	let nom = $("#nomI").val();
-	let prenom = $("#prenomI").val();
-	let club = $("#club").val();
-	let code = $("#code").val();
-	let num_li = $("#num_li").val();
-	let valide = $("#valide").val();
+	event.preventDefault();
+	let nom = $("#nom").val().toUpperCase();
+	let prenom = $("#prenom").val();
+	let date_naissance = $("#date_naissance").val();
+	let code_insee = $("#code_insee").val();
+	let num_licence = $("#num_licence").val();
+	let valide = $("#valide").prop("checked") ? 1 : null;
 
-	ajaxRequest('PUT', urlCir2+'/php/request.php/cyclistes/' + mail, (error) => {
+	ajaxRequest('PUT', urlCir2+'/php/request.php/cyclistes/' + Cookies.get('mail'), (error) => {
 
-		// Faire un gestionnaire d'erreur en cas de mauvaise sasie de l'user
-		//si error n'est pas defini on fais ceci sinon on appele ajaxRequest
-	  	ajaxRequest('GET',urlCir2+'/php/request.php/cyclistes', chargementCoureurs);
+		
+		// Si le serveur nous renvoie une erreur on l'affiche
+		if (typeof(error.error) == undefined) {
+			$('#secError').show();
+			let msgError = "";
+			switch (error.error) {
+				case 1:
+					msgError = "Votre numéro Insee n'est pas valide ou n'est pas contenue dans notre base de donnée";
+				break;
+			}
+			$('#secError').html(msgError);
+		} else {
+			Cookies.remove('mail');
+			$('#secError').hide();
+			$('#secError').html('');
+			ajaxRequest('GET',urlCir2+'/php/request.php/cyclistes/?nom=' + Cookies.get('nom') + "&prenom=" + Cookies.get('prenom'), 
+						chargementCoureurs);
+		}
 	},	'nom=' + nom +
 		'&prenom=' + prenom +
-		'&club=' + club +
+		'&date_naissance=' + date_naissance +
 		'&valide=' + valide +
-		'&code=' + code + 
-		'&num_licence=' + num_li);
+		'&code_insee=' + code_insee + 
+		'&num_licence=' + num_licence);
 }
 

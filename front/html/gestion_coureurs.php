@@ -21,43 +21,41 @@
 	<section id= "cyclisteInfos" class="container" style="display: none;">
 		<form id="update">
   			<div class="form-row">
-					<div class="form-group col-md-6">
-						<label for="mail">Email</label>
-						<input type="email" id="mail" class="form-control">
+					<div class="form-group col-md-4">
+						<label for="nom">Nom</label>
+						<input type="text" id="nom" class="form-control" autofocus required>
 					</div>
-					<div class="form-group col-md-3">
-						<label for="nomI">Nom</label>
-						<input type="text" id="nomI" class="form-control">
+					<div class="form-group col-md-4">
+						<label for="prenom">Prenom</label>
+						<input type="text" id="prenom" class="form-control" autofocus required>
 					</div>
-					<div class="form-group col-md-3">
-						<label for="prenomI">Prenom</label>
-						<input type="text" id="prenomI" class="form-control">
+					<div class="form-group col-md-4">
+						<label for="date_naissance">Date de naissance</label>
+						<input type="date" id="date_naissance" class="form-control" autofocus required>
 					</div>
 			</div>
-			<div class="form-group">
-				<label for="club">Club</label>
-				<input type="text" id="club" class="form-control">
-			</div>
-			<div class="form-row">
-				<div class="form-group col-md-2 ">
-					<label for="valide"> Valide</label>
-					<input type="int" id="valide" class="form-control">
-				</div>
-			</div>
-			<div class="form-row">
+			
+			<div class="form-row align-items-center">
 				<div class="form-group col-md-6">
-					<label for="code">Code Insee</label>
-					<input type="int" id="code" class="form-control">
+					<label for="code_insee">Code Insee</label>
+					<input type="number" min="0" id="code_insee" class="form-control" autofocus required>
 				</div>
 				<div class="form-group col-md-4">
-					<label for="num_li">Numero de Licence</label>
-					<input type="int" id="num_li" class="form-control">
+					<label for="num_licence">Numero de Licence</label>
+					<input type="number" min="0" id="num_licence" class="form-control" autofocus required>
 				</div>
-			</div>
-			<button type="submit" id="update" class="btn btn-primary">Update</button>
-		</form>
-	</section>															
+				<div class="col-auto">
+					<div class="form-check md-2 ">
+						<input type="checkbox" class="form-check-input" id="valide">
+						<label class="form-check-label" for="valide">Valide</label>
+					</div>	
+				</div>
 
+			</div>
+			<button type="submit" class="btn btn-primary">Update</button>
+		</form>
+	</section>
+	<section class="container" id="secError" style="display: none;"></section>
 	<?php require "footer.html" ?>
 
 </body>

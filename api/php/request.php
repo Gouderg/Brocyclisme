@@ -19,13 +19,12 @@
 
 	$data = false;
 	
-	if ($requestMethod == 'OPTIONS')
-		{
+	if ($requestMethod == 'OPTIONS') {
 		header('HTTP/1.1 200 OK');
 		exit;
-		}
+	}
 
-	//var_dump($_SERVER);
+
 
 	if ($requestRessource == 'authenticate') {
 		encodeData(authenticate($db), $requestMethod);
@@ -89,23 +88,39 @@
 	} else if ($requestRessource == 'cyclistes') {
 
 		// On récupère des informations sur les cyclistes
-		if ($id == NULL) {
-			encodeData(dbRequestCyclistes($db), $requestMethod);		// si num_licene null on renvoie tous les cyclistes
-		} else {
-			encodeData(dbRequestInfos($db, $id), $requestMethod);	//sinon on renvoie le cycliste correspondant au numéro de licence 
-		}
-		switch ($requestMethod) {									//cas d'une methode PUT
+		
+		switch ($requestMethod) {
+			case 'GET':
+				if ($id == NULL && isset($_GET['nom']) && isset($_GET['prenom'])) {
+					$data = dbRequestCyclistes($db, strip_tags($_GET['nom']), strip_tags($_GET['prenom']));
+				} else {
+					$data = dbRequestInfos($db, $id);	//sinon on renvoie le cycliste correspondant au mail
+				}
+			break;
+
 			case 'PUT':
-			parse_str(file_gets_contents('php://input'), $_PUT);
-			if(isset($_PUT['nom']) && isset($_PUT['prenom']) && isset($_PUT['num_licence']) && isset($_PUT['club']) && isset($_PUT['code_insee'])  && isset($_PUT['valide'])  && $id != NULL) { 									// si l'id n'est pas NULL et que tous les attributs existent
-				
-				$data =dbModifyinfo($db,  $_PUT['nom'], $_PUT['prenom'], $_PUT['club'], $_PUT['valide'], $_PUT['code_insee'], $id, $_PUT['num_licence']); //on execute la fonction dbModify qui permet de modifier les informations du cycliste 
-				
+				parse_str(file_get_contents('php://input'), $_PUT);
+				// On vérifie si tous nos paramètres sont bien reçu
+				if (isset($_PUT['nom']) && isset($_PUT['prenom']) && isset($_PUT['num_licence']) && 
+				   isset($_PUT['code_insee']) && isset($_PUT['date_naissance'])  && isset($_PUT['valide'])  && $id != NULL) { 
+					
+					$error = false;
+
+					// On vérifie si le numéro insee existe dans la base de donnée sinon on renvoie une erreur
+					if (dbVerifInsee($db, intval($_PUT['code_insee']))) {
+
+						$data = dbModifyInfos($db, strip_tags($_PUT['nom']), strip_tags($_PUT['prenom']), 
+											 intval($_PUT['num_licence']), intval($_PUT['code_insee']), 
+											 strip_tags($_PUT['date_naissance']), intval($_PUT['valide']), strip_tags($id));
+					} else {$error = 1;}
+					
+					if ($error) {$data['error'] = $error;}
 				}
 
 				
-				break;
+			break;
 		}
+		encodeData($data, $requestMethod);
 	} 
 
 
