@@ -49,7 +49,7 @@
 			</button>
 		</form>
 	</section>
-	<section class="container" id="secClas" style="display: none;"></section>
+	<section class="container" id="classementCourse" style="display: none;"></section>
 	<section class="container" id="secError" style="display: none;"></section>
 
 	<?php require "footer.html" ?>

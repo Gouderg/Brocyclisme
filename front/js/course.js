@@ -40,10 +40,23 @@ function loadCourse(liste) {
 		if (temp - now > 0) {
 			listeCourse += '<td><button type="submit" class="btn btn-primary" id="btnInsc">Inscription</button>';	
 		} else {
-			listeCourse += '<td><button type="submit" class="btn btn-primary" id="btnClas">Classement</button>';
-		}		   
+
+			listeCourse += '<td id="isOrga"></td>';
+			 ajaxRequest('GET', urlCir2+'/php/request.php/courseOrga/'+ elt.id + '?nom=' + Cookies.get('nom') + "&prenom=" + Cookies.get('prenom') , (isOrga) => {
+			 	
+                if (isOrga ) {
+       			$('#isOrga').html('<button type="submit" class="btn btn-primary" id="btnClas">Classement</button>');
+				
+				
+				}	
+
+			});
+
+		}	
+		 
 		listeCourse += '</tr>';
 	});
+
 	listeCourse += "</tbody></table>";
 
 	$('#listeCourse').html(listeCourse); // On injecte dans la balise html
@@ -65,6 +78,10 @@ function loadCourse(liste) {
 
 	// Attente du click sur le mot classment
 	$('#listeCourse').on('click','#btnClas', () => {
+		 let id = $(event.target).closest('tr').attr('id');
+		 console.log('Id:' + id);
+		 ajaxRequest('GET',urlCir2+'/php/request.php/classement/' + id , classCourse);
+
 	});
 }
 
@@ -175,3 +192,42 @@ function updateInfoCourse(event) {
 	   '&dossard=' + $('#dossardInsc').val() + 
 	   '&id=' + Cookies.get('idCourse'));
 };
+
+
+function classCourse(classement){
+	console.log(classement);
+
+	$("#classementCourse").show();
+
+	let Classement = '<br><br><div class="container"><h4>Classement de la course</h4><br>';
+    	Classement  += '<table class="table">' +
+						'<thead>' +
+							'<tr>' +
+								'<th scope="col">Place</th>' +
+								'<th scope="col">Points</th>' +
+								'<th scope="col">Nom</th>' +
+								'<th scope="col">Prenom</th>' +
+								'<th scope="col">Mail</th>' +
+								'<th scope="col">Club</th>' +
+								'<th scope="col">Categorie</th>' +
+							'</tr>' +
+							'</thead>' +
+							'<tbody>';
+
+		classement.forEach(function(elt) {  
+			Classement += '<tr id="'+elt.mail+'"><th>'+elt.place+'</th>' +
+					  	 '<td>'+elt.point+'</td>' +
+					   	 '<td>'+elt.nom+'</td>' +
+					   	 '<td>' + elt.prenom + '</td>'+
+					   	 '<td>' + elt.mail +'</td>'+
+					   	 '<td>' + elt.club +'</td>'+
+					   	 '<td>' + elt.categorie +'</td>'+
+					   	 
+					   	 '</tr>';
+
+	});
+		   
+    
+    $("#classementCourse").html(Classement);
+
+}

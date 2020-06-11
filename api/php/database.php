@@ -203,6 +203,19 @@
 		return true;
 	}
 
+	function dbClassement($db, $mail){
+		try{
+			$request = 'SELECT * FROM participe INNER JOIN cycliste on participe.mail=cycliste.mail';
+			$statement =$db->prepare($request);
+			$statement->execute();
+			$result = $statement->fetchALL(PDO::FETCH_ASSOC);
+		} catch(PDOException $exception){
+			error_log('Request error :'.$exception->getMessage());
+			return false;
+		}
+		return $result;
+	}
+
 
 
 	#
@@ -265,6 +278,7 @@
 		}
 		return true;
 	}
+
 
 
 	#Fonction qui recupere les infos pour la fiche du cycliste 

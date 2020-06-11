@@ -86,6 +86,17 @@
 		// On encode en json avec le bon code 
 		encodeData($data, $requestMethod);
 
+	} else if ($requestRessource =='courseOrga') {
+		if(dbRequestCreateurCourse($db, $_GET['nom'], $_GET['prenom'], $id)){
+			encodeData(true, $requestMethod);
+		}
+	} else if ($requestRessource =='classement') {
+		intval($id);
+		if($id != NULL){
+
+		encodeData(dbClassement($db, $id), $requestMethod);
+		}
+		
 	} else if ($requestRessource == 'cyclistes') {
 
 		// On récupère des informations sur les cyclistes
