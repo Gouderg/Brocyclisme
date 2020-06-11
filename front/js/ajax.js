@@ -18,7 +18,6 @@ function ajaxRequest(type, url, callback, data = null) {
 				if (xhr.responseText.length != 0) {callback(JSON.parse(xhr.responseText));}
 				else {callback(null);}
 				break;
-
 			default: 
 				httpErrors(xhr.status);
 		}

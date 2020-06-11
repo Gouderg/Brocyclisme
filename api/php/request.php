@@ -27,11 +27,12 @@
 		exit;
 	}
 
-
-
 	if ($requestRessource == 'authenticate') {
-		encodeData(authenticate($db), $requestMethod);
-
+		if (isset($_GET['login']) && isset($_GET['password'])) {
+			$data = dbCheckUser($db, strip_tags($_GET['login']), strip_tags($_GET['password']));
+			encodeData($data, $requestMethod);
+		}
+		
 	} else if ($requestRessource == 'course') {
 		switch ($requestMethod) {
 			case 'GET':

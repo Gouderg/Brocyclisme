@@ -41,3 +41,4 @@ FROM cycliste cy
 JOIN club cl ON cl.club = cy.club
 JOIN user u ON u.mail = cl.mail
 WHERE u.nom = "SAILEC" AND u.prenom = "Tom" AND cy.mail = "tb@opf.com";
+

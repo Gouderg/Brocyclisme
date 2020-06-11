@@ -4,6 +4,8 @@
 	<meta charset="utf-8">
 	<title>Brocyclisme</title>
 
+	<?php require "head.html" ?>
+
 	<script type="text/javascript" src="../js/constantes.js" defer></script>
 	<script type="text/javascript" src="../js/ajax.js" defer></script>
 	<script type="text/javascript" src="../js/coureurs.js" defer></script>
