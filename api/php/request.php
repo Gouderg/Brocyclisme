@@ -12,31 +12,37 @@
 		header('HTTP/1.1 503 Service Unavailable');
 		exit(1);
 	}
-
-	// On récupère les informations envoyées par l'url
-	$requestMethod = $_SERVER['REQUEST_METHOD'];
-	$request = explode('/',substr($_SERVER['PATH_INFO'], 1));
-	$requestRessource = array_shift($request);
-	$id = array_shift($request);
-	if ($id == '') $id = NULL;
+	// On récupère les informations de l'url
+	$requestMethod = $_SERVER['REQUEST_METHOD'];				// Méthode (GET, POST, PUT ou DELETE)
+	$request = explode('/',substr($_SERVER['PATH_INFO'], 1));	// On stocke dans un tableau notre url fractionné
+	$requestRessource = array_shift($request);					// On récupère la ressource envoyé
+	$id = array_shift($request);								// On récupère l'id passé dans l'url
+	if ($id == '') $id = NULL;									// On le met à null s'il est vide
 
 	$data = false;
 	
+	// Dis au front qu'une requête PUT peut se faire
 	if ($requestMethod == 'OPTIONS') {
 		header('HTTP/1.1 200 OK');
 		exit;
 	}
 
+	// Nous avons 5 cas de figures concernant la ressource
+	// Si l'utilisateur veut s'authentifier
 	if ($requestRessource == 'authenticate') {
 		if (isset($_GET['login']) && isset($_GET['password'])) {
+			// On regarde dans la bdd si c'est le bon USER
 			$data = dbCheckUser($db, strip_tags($_GET['login']), strip_tags($_GET['password']));
-			encodeData($data, $requestMethod);
+			encodeData($data, $requestMethod); // On envoie la réponse
 		}
-		
+	// Si l'utilisateur veut des informations sur la course		
 	} else if ($requestRessource == 'course') {
 		switch ($requestMethod) {
+			// On a 2 GET dans cette ressource
 			case 'GET':
+				// Soit on veut des infos précises sur une course et sur des participants
 				if ($id != NULL && isset($_GET['nom']) && isset($_GET['prenom'])) {
+					
 					$infoCourse = false;
 					$infoParticipants = false;
 
@@ -44,16 +50,17 @@
 					if (dbRequestCreateurCourse($db, $_GET['nom'], $_GET['prenom'], $id)) {
 						// Si c'est le monsieur qui a crée la course, il accède à la liste entière des personnes
 						$infoParticipants = dbRequestAllPartiCourse($db, $id);
-
+					// Si ce n'est pas l'admin
 					} else {
 						// Sinon il récupère juste les informations de son club
 						$infoParticipants = dbRequestClubPartiCourse($db, $_GET['nom'], $_GET['prenom'], $id);
-
 					}
 
 					$infoCourse = dbRecupOneCourse($db, $id);			// On récupère les infos précise d'une course
 					$data['participants'] = $infoParticipants;			// On crée un objet participant
 					$data['course'] = $infoCourse;						// On crée un objet course
+				
+				// Soit on récupère des informations sur les courses
 				} else {
 					$data = dbRecupCourse($db);
 				}
@@ -63,6 +70,7 @@
 				if (isset($_POST['nomC']) && isset($_POST['prenomC']) && isset($_POST['mail']) && 
 					isset($_POST['dossard']) && isset($_POST['id']) && isset($_POST['nomU']) && isset($_POST['prenomU'])) {
 
+					// Chaque condition peut renvoyer une erreur qui sera traité dans le front
 					$error = false;
 
 					// On vérifie si le nom existe et si l'adresse mail existe et si le cycliste peut participer. 
@@ -89,11 +97,13 @@
 		// On encode en json avec le bon code 
 		encodeData($data, $requestMethod);
 
+	// Si l'utilisateur veut des informations sur l'organisation
 	} else if ($requestRessource =='courseOrga') {
 		if(dbRequestCreateurCourse($db, $_GET['nom'], $_GET['prenom'], $id)){
 			encodeData(true, $requestMethod);
 		}
 
+	// Si l'utilisateur veut des informations sur le classement
 	} else if ($requestRessource =='classement') {
 		if($id != NULL){
 			encodeData(dbClassement($db, intval($id)), $requestMethod);
@@ -104,10 +114,13 @@
 		// On récupère des informations sur les cyclistes
 		switch ($requestMethod) {
 			case 'GET':
+				// On récupère tous les cyclistes d'un club
 				if ($id == NULL && isset($_GET['nom']) && isset($_GET['prenom'])) {
 					$data = dbRequestCyclistes($db, strip_tags($_GET['nom']), strip_tags($_GET['prenom']));
+				
+				// Sinon on récupère des information sur un cysliste
 				} else {
-					$data = dbRequestInfos($db, $id);	//sinon on renvoie le cycliste correspondant au mail
+					$data = dbRequestCycliste($db, $id);
 				}
 			break;
 
@@ -137,7 +150,13 @@
 	header('HTTP/1.1 404 Bad request');
 	exit(1);
 
-	// Fonction qui encode la réponse en json et renvoie le bon code
+	//------------------------------------------------------------------
+	//--- encodeData ---------------------------------------------------
+	//------------------------------------------------------------------
+	// Renvoie la réponse encodé en json avec un bon header
+	// \param data Données renvoyées par le serveur
+	// \param code Contient la méthode permettant de renvoyer le bon code
+	// \return Renvoie data encodé en json ou null
 	function encodeData($data, $code) {
 		header('Content-Type: application/json');
 		header('Cache-control: no-store, no-cache, must-revalidate');
@@ -151,23 +170,7 @@
 			echo json_encode($data);
 		} else {
 			echo null;
-			
 		}
 		exit();
 	}
-
-	// Fonction pour l'authentification
-	function authenticate($db) {
-		// Récupère le login/password
-		$login = $_SERVER['PHP_AUTH_USER'];
-		$password = $_SERVER['PHP_AUTH_PW'];
-
-		// Check the user
-		if (!dbCheckUserInjection($db, $login, $password)) {
-			header('HTTP/1.1 401 Unauthorized');
-			exit();
-		}
-	}
-
-
 ?>

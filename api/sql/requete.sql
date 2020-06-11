@@ -42,3 +42,8 @@ JOIN club cl ON cl.club = cy.club
 JOIN user u ON u.mail = cl.mail
 WHERE u.nom = "SAILEC" AND u.prenom = "Tom" AND cy.mail = "tb@opf.com";
 
+SELECT p.temps, p.point, p.id, cy.nom, cy.prenom 
+FROM participe p
+JOIN cycliste cy ON cy.mail = p.mail  
+JOIN club cl ON cl.club = cy.club 
+WHERE cl.club = "ABC PLOUESCAT" AND p.id = 1;

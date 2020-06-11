@@ -1,17 +1,28 @@
 'use strict';
 
+//------------------------------------------------------------------
+//--- ajaxRequest --------------------------------------------------
+//------------------------------------------------------------------
+// Fonction qui communique avec le serveur grâce au protocole HTTP
+// \param type Type de méthode de la requête
+// \param url Contient l'url vers la ressource
+// \param callback Fonction appelé si la requête renvoie un bon code
+// \param data Contient les paramètres supplémentaires
+// \return Renvoie la réponse du serveur décodé à la fonction de callback
 function ajaxRequest(type, url, callback, data = null) {
-	let xhr = new XMLHttpRequest();
+	let xhr = new XMLHttpRequest();			// Création d'un nouveau protocole
 	if (type == 'GET' && data != null) {
 		url += '?' + data;
 	}
 	xhr.open(type, url);
+	// Header prenant en compte le formalisme REST
 	xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 	
 	console.log(url); // Regarde l'url envoyé
 
 	xhr.onload = () => {
 		console.log(xhr.responseText); // Regarde la réponse quoi qu'il arrive 
+		// En fonction du code de retour, on effectue quelque chose
 		switch(xhr.status) {
 			case 200:
 			case 201:
@@ -26,6 +37,11 @@ function ajaxRequest(type, url, callback, data = null) {
 	xhr.send(data);
 }
 
+//------------------------------------------------------------------
+//--- httpErrors ---------------------------------------------------
+//------------------------------------------------------------------
+// Affiche dans la console une courte description de l'erreur
+// \param errorCode Contient le code erreur HTTP
 function httpErrors(errorCode) {
 	let message = {
 		400: '400: Requête incorrecte',

@@ -25,7 +25,7 @@ Après vous être rendu à la racine du site, allez dans votre terminal mysql et
 	SOURCE sql/bddGood.sql;
 ```
 Tout est inclus dans ce fichier, mais si vous voulez changer les logins de connexion, vous pouvez changer les constantes dans le fichier api/php/constante.php
-On peux également changer l'url denotre site dans front/js/constantes.js
+On peux également changer l'url de notre site dans front/js/constantes.js
 
 ### Mise en Place du Virtual Host
 

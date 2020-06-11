@@ -20,20 +20,15 @@
 			</div>
 
 			<form class="col-4" style="text-align: right;" id="connexion">
-      			<a class="nav-link" id="user"></a>
-      			<button class="btn btn-success" type="submit" id="btnDeco">Déconnexion</button>
-    		</form>
+				<a class="nav-link" id="user"></a>
+				<button class="btn btn-success" type="submit" id="btnDeco">Déconnexion</button>
+			</form>
 		</div>
 	</nav>
 
 	<script>
-		if (Cookies.get('nom')) {
-			$('#btnDeco').show();
-			$('#user').html(Cookies.get('nom') + ' ' + Cookies.get('prenom'));
-		} else {
-			$('#btnDeco').hide();
-		}
 
+		$('#user').html(Cookies.get('nom') + ' ' + Cookies.get('prenom'));
 		$('#connexion').submit(fonDeco);
 
 		function fonDeco(event) {

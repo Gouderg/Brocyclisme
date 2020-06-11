@@ -7,10 +7,11 @@
 </head>	
 <body>
 	<?php require "header.html" ?>
+
 	<div class="col-md-12">
 		<h1 style="text-align: center; text-decoration: underline; font-family: verdana;">Le gestionnaire numéro 1 du cyclisme </h1>
 	</div>
-	<br> <br> <br>
+	<br><br><br>
 
 	<section class="row">
 		<div class="col-lg-6 text-center">

@@ -1,6 +1,12 @@
 <?php
-
-	// Fonction qui vérifie si 
+	//------------------------------------------------------------------
+	//--- dbCheckUser --------------------------------------------------
+	//------------------------------------------------------------------
+	// Check si le login/mot de passe
+	// \param db La connexion avec la base de données
+	// \param login	Adresse mail du user
+	// \param password Mot de passe du user
+	// \return Renvoie le nom et le prénom du user
 	function dbCheckUser($db, $login, $password) {
 		try {
 			$request = "SELECT nom, prenom FROM user WHERE mail = :mail AND password = :password";

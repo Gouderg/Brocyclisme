@@ -16,11 +16,19 @@
 
 </head>
 <body>
+	<header>
+		<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #FD9927;">
+			<div class="collapse navbar-collapse row" id="navbarSupportedContent">
+				<div class="col-12" style="text-align: center;">
+					<h1 style="font-weight: bold;">Brocyclisme</h1>
+				</div>
+			</div>
+		</nav>
+	</header>
 	
-	<?php require "header.html" ?>
 	<section class="container">
 		<br>
-		<h4>Authentication</h4>
+		<h4>Authentification</h4>
 		<hr>
 		<br>
 		<section id="errors" class="container alert alert-danger" style="display: none;"></section>

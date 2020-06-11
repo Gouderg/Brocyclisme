@@ -12,8 +12,9 @@
 </head>	
 <body>
 	<?php require "header.html" ?>
+
 	<section class="container">
-		<h4 style="text-decoration: underline; font-family: bold;">Liste des coureurs</h4>
+		<h4>Liste des coureurs</h4>
 		<br>
 		<div id="listeCycliste" class="container"></div>
 	</section>
@@ -22,7 +23,7 @@
 	<section id="infos" class="container" style="display: none;"></section>
 	<section id= "cyclisteInfos" class="container" style="display: none;">
 		<form id="update">
-  			<div class="form-row">
+				<div class="form-row">
 					<div class="form-group col-md-4">
 						<label for="nom">Nom</label>
 						<input type="text" id="nom" class="form-control" autofocus required>
@@ -58,6 +59,7 @@
 		</form>
 	</section>
 	<section class="container" id="secError" style="display: none;"></section>
+
 	<?php require "footer.html" ?>
 
 </body>
