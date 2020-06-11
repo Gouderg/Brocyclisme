@@ -47,7 +47,7 @@ Guide :
 		Header set Access-Control-Allow-Methods "GET,POST,PUT,DELETE,OPTIONS"
 		Require all granted
 		</Directory>
-	* </VirtualHost>
+	  </VirtualHost>
 
    prj-cir2-web-front.monposte.conf : (N'oubliez pas d'enregistrer !!)
 	
@@ -56,20 +56,20 @@ Guide :
 		DocumentRoot "/var/www/cir2web/front"       
         ErrorLog ${APACHE_LOG_DIR}/error.log
         CustomLog ${APACHE_LOG_DIR}/access.log combined
-	* </VirtualHost>
+	  </VirtualHost>
 
 4) Puis il faut rajouter les hosts. Pour cela ouvrez le fichier etc/hosts à l'aide d'un éditeur de texte.
 
    On rajoute ces deux lignes en dessous du localhost:	
 
 	* 127.0.0.1       prj-cir2-web-api.monposte
-	* 127.0.0.1		  prj-cir2-web-front.monposte
+	  127.0.0.1		  prj-cir2-web-front.monposte
 
 5) Enfin on retourne dans /etc/apache2/sites-available pour y effectuer les deux commandes suivantes:
  
 
 	* sudo nano prj-cir2-web-front.monposte.conf
-	* sudo nano prj-cir2-web-api.monposte.conf
+	  sudo nano prj-cir2-web-api.monposte.conf
 
 6) Pour finir on restart le serveur à l'aide de la commande suivante:
 
