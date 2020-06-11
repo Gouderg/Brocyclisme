@@ -36,7 +36,6 @@ function chargementCoureurs(cyclistes){
 	// Attente du click sur le bouton infomartion
 	$('#listeCycliste').on('click','#info', () => {
 		let id = $(event.target).closest('tr').attr('id');
-		console.log('Information :' + id);
 		ajaxRequest('GET',urlCir2+'/php/request.php/cyclistes/' + id , infosCoureur);
 
 	});

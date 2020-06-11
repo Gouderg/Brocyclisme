@@ -5,8 +5,8 @@ ajaxRequest('GET', urlCir2+'/php/request.php/course', loadCourse);
 function loadCourse(liste) {
 	$('#secInf').hide();	// On cache toutes les sections
 	$('#secInsc').hide();
-	$('#secClas').hide();
-	$('#secError').hide();
+	$("#classementCourse").hide();
+	
 
 	// On crée une variable qui va contenir une table d'information concernant les courses
 	let listeCourse = '<table class="table">' +
@@ -40,10 +40,17 @@ function loadCourse(liste) {
 		if (temp - now > 0) {
 			listeCourse += '<td><button type="submit" class="btn btn-primary" id="btnInsc">Inscription</button></td>';	
 		} else {
-			listeCourse += '<td><button type="submit" class="btn btn-primary" id="btnClas">Classement</button></td>';
-		}		   
+			listeCourse += '<td id="isOrga"></td>';
+			ajaxRequest('GET', urlCir2+'/php/request.php/courseOrga/'+ elt.id + '?nom=' + Cookies.get('nom') + "&prenom=" + Cookies.get('prenom') , (isOrga) => {
+			 	
+            	if (isOrga ) {
+       				$('#isOrga').html('<button type="submit" class="btn btn-primary" id="btnClas">Classement</button>');
+				}	
+			});
+		}	
 		listeCourse += '</tr>';
 	});
+
 	listeCourse += "</tbody></table>";
 
 	$('#listeCourse').html(listeCourse); // On injecte dans la balise html
@@ -65,7 +72,8 @@ function loadCourse(liste) {
 
 	// Attente du click sur le mot classement
 	$('#listeCourse').on('click','#btnClas', () => {
-		console.log('Hello');
+		let id = $(event.target).closest('tr').attr('id');
+		ajaxRequest('GET',urlCir2+'/php/request.php/classement/' + id , classCourse);
 	});
 }
 
@@ -73,8 +81,8 @@ function loadCourse(liste) {
 function loadInfo(info) {
 	$('#secInf').show(); 	// On affiche la section avec Information et on cache le reste
 	$('#secInsc').hide();
-	$('#secClas').hide();
-	$('#secError').hide();
+	$("#classementCourse").hide();
+
 
 	// On déclare 2 variables. L'une contient une description de la course. L'autre la liste des cyclistes de la course
 	let listeCoureur = '<br><br><div class="container"><h4>Liste Cyclistes</h4><br>';
@@ -129,8 +137,7 @@ function loadInfo(info) {
 function inscCourse(idCourse) {
 	$('#secInf').hide();	// On affiche le formulaire d'inscription et on cache le reste
 	$('#secInsc').show();
-	$('#secClas').hide();
-	$('#secError').hide();
+	$("#classementCourse").hide();
 
 	// On défini un cookie ayant l'identifiant de la course sélectionnée
 	Cookies.set('idCourse', idCourse, { sameSite: 'lax' });
@@ -164,6 +171,7 @@ function updateInfoCourse(event) {
 			}
 			$('#secError').html(msgError);
 		} else {
+			$('#secError').hide();
 			$('#secError').html('');
 			$('#formInsc')[0].reset();
 			ajaxRequest('GET', urlCir2+'/php/request.php/course', loadCourse);
@@ -177,3 +185,48 @@ function updateInfoCourse(event) {
 	   '&dossard=' + $('#dossardInsc').val() + 
 	   '&id=' + Cookies.get('idCourse'));
 };
+
+
+function classCourse(classement){
+	$("#classementCourse").show();
+	$('#secInf').hide();
+	$('#secInsc').hide();
+
+	let Classement = '<br><br><div class="container"><h4>Classement de la course</h4><br>';
+    	Classement  += '<table class="table">' +
+						'<thead>' +
+							'<tr>' +
+								'<th scope="col">Place</th>' +
+								'<th scope="col">Points</th>' +
+								'<th scope="col">Temps</th>' +
+								'<th scope="col">Nom</th>' +
+								'<th scope="col">Prénom</th>' +
+								'<th scope="col">Email</th>' +
+								'<th scope="col">Club</th>' +
+								'<th scope="col">Catégorie</th>' +
+							'</tr>' +
+							'</thead>' +
+							'<tbody>';
+
+		classement.forEach(function(elt) {  
+			Classement += '<tr id="'+ elt.mail + '">' +
+							'<th>' + elt.place + '</th>' +
+					  	 	'<td>' + elt.point + '</td>' +
+					  	 	'<td>' + elt.temps + '</td>' +
+					   	 	'<td>' + elt.nom + '</td>' +
+					   	 	'<td>' + elt.prenom + '</td>'+
+					   	 	'<td>' + elt.mail + '</td>'+
+					   	 	'<td>' + elt.club + '</td>'+
+					   	 	'<td>' + elt.categorie + '</td>'+
+					   	 
+					   	 '</tr>';
+
+	});
+		   Classement += '<tr>' +'<td><button type="submit" class="btn btn-primary" id="print">Imprimer</button>' + '</tr>'
+
+    
+    $("#classementCourse").html(Classement);
+    $('#classementCourse').on('click','#print', () => {
+    	print(classement);
+	});
+}

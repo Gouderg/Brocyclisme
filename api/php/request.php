@@ -1,5 +1,8 @@
 <?php
-	require_once("database.php");
+	require_once("connexion.php");
+	require_once("fonDatabase/course.php");
+	require_once("fonDatabase/coureur.php");
+	require_once("fonDatabase/authentication.php");
 
 	// Connexion à la base de données
 	$db = dbConnect();
@@ -85,10 +88,19 @@
 		// On encode en json avec le bon code 
 		encodeData($data, $requestMethod);
 
+	} else if ($requestRessource =='courseOrga') {
+		if(dbRequestCreateurCourse($db, $_GET['nom'], $_GET['prenom'], $id)){
+			encodeData(true, $requestMethod);
+		}
+
+	} else if ($requestRessource =='classement') {
+		if($id != NULL){
+			encodeData(dbClassement($db, intval($id)), $requestMethod);
+		}
+
 	} else if ($requestRessource == 'cyclistes') {
 
 		// On récupère des informations sur les cyclistes
-		
 		switch ($requestMethod) {
 			case 'GET':
 				if ($id == NULL && isset($_GET['nom']) && isset($_GET['prenom'])) {
@@ -116,14 +128,10 @@
 					
 					if ($error) {$data['error'] = $error;}
 				}
-
-				
 			break;
 		}
 		encodeData($data, $requestMethod);
 	} 
-
-
 
 	header('HTTP/1.1 404 Bad request');
 	exit(1);
