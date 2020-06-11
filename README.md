@@ -39,7 +39,7 @@ Guide :
 
    prj-cir2-web-api.monposte.conf : (N'oubliez pas d'enregistrer !!)
 	
-	* <VirtualHost *:80>
+	  <VirtualHost *:80>
         ServerName prj-cir2-web-api.monposte
 		DocumentRoot "/var/www/cir2web/api"
        	<Directory "/var/www/cir2web/api">
@@ -51,7 +51,7 @@ Guide :
 
    prj-cir2-web-front.monposte.conf : (N'oubliez pas d'enregistrer !!)
 	
-	* <VirtualHost *:80>
+	 <VirtualHost *:80>
        	ServerName prj-cir2-web-front.monposte       
 		DocumentRoot "/var/www/cir2web/front"       
         ErrorLog ${APACHE_LOG_DIR}/error.log
@@ -62,18 +62,18 @@ Guide :
 
    On rajoute ces deux lignes en dessous du localhost:	
 
-	* 127.0.0.1       prj-cir2-web-api.monposte
+	  127.0.0.1       prj-cir2-web-api.monposte
 	  127.0.0.1		  prj-cir2-web-front.monposte
 
 5) Enfin on retourne dans /etc/apache2/sites-available pour y effectuer les deux commandes suivantes:
  
 
-	* sudo nano prj-cir2-web-front.monposte.conf
+	  sudo nano prj-cir2-web-front.monposte.conf
 	  sudo nano prj-cir2-web-api.monposte.conf
 
 6) Pour finir on restart le serveur à l'aide de la commande suivante:
 
-	* sudo service apache2 restart
+	  sudo service apache2 restart
 
 Le VirtualHost est mis en place.
 
