@@ -29,15 +29,15 @@ On peux également changer l'url denotre site dans front/js/constantes.js
 
 ### Mise en Place du Virtual Host
 
-Le site fonctionne à l'aide de virtual host, vous devez donc les creer sur votre machine.
+Le site fonctionne à l'aide de deux virtual host, vous devez donc les creer sur votre machine.
 
 Guide :
 
-1) rendez vous dans /etc/apache2/sites-available
-2) creer deux repertoires prj-cir2-web-api.monposte.conf et prj-cir2-web-front.monposte.conf
-3) Ouvrez un editeur de texte et copiez les dfférentes commandes permeetant la mise en place de votre virtual host:
+1) Rendez-vous dans /etc/apache2/sites-available
+2) Créez deux répertoires prj-cir2-web-api.monposte.conf et prj-cir2-web-front.monposte.conf
+3) Ouvrez un editeur de texte et copiez les dfférentes commandes permettant la mise en place de votre virtual host:
 
-prj-cir2-web-api.monposte.conf : (N'oubliez pas d'enregistrer !!)
+   prj-cir2-web-api.monposte.conf : (N'oubliez pas d'enregistrer !!)
 	
 	* <VirtualHost *:80>
         ServerName prj-cir2-web-api.monposte
@@ -49,18 +49,18 @@ prj-cir2-web-api.monposte.conf : (N'oubliez pas d'enregistrer !!)
 		</Directory>
 	* </VirtualHost>
 
-prj-cir2-web-front.monposte.conf : (N'oubliez pas d'enregistrer !!)
+   prj-cir2-web-front.monposte.conf : (N'oubliez pas d'enregistrer !!)
 	
 	* <VirtualHost *:80>
        	ServerName prj-cir2-web-front.monposte       
 		DocumentRoot "/var/www/cir2web/front"       
         ErrorLog ${APACHE_LOG_DIR}/error.log
         CustomLog ${APACHE_LOG_DIR}/access.log combined
-	</VirtualHost>
+	* </VirtualHost>
 
-4) Puis il faut rajouter les hosts. Pour cela ouvrez  le fichier etc/hosts à l'aide d'un editeur de texte.
+4) Puis il faut rajouter les hosts. Pour cela ouvrez le fichier etc/hosts à l'aide d'un éditeur de texte.
 
-On rajoute ces deux lignes en dessous du localhost:	
+   On rajoute ces deux lignes en dessous du localhost:	
 
 	* 127.0.0.1       prj-cir2-web-api.monposte
 	* 127.0.0.1		  prj-cir2-web-front.monposte
@@ -77,7 +77,7 @@ On rajoute ces deux lignes en dessous du localhost:
 
 Le VirtualHost est mis en place.
 
-RAPPEL: Pensez à verifier le status du serveur afin de voir si tout fonctionne correctement !! ( commande : sudo service apache2 status)
+RAPPEL: Pensez à vérifier le status du serveur afin de voir si tout fonctionne correctement !! ( commande : sudo service apache2 status)
 
 
 ## Utilisation
@@ -87,7 +87,7 @@ Le site se veut simple d'utilisation.
 Il permet visualiser la liste des coureurs d'un club, de les modifier, de les inscrire à une course et d’établir le classement
 final d’une course du point de vue d'un responsable de club.
 
-Il est constituer de deux parties : 
+Il est constitué de deux parties : 
 
  * La première permettant au responsable du club de gérer les différents cyclistes de son club.
  * La deuxième permettant au responsable du club de gérer les différentes courses à venir ou passées.
