@@ -268,9 +268,10 @@
 	// \return Information concernant la victoire
 	function dbClassement($db, $id){
 		try{
-			$request = 'SELECT * 
+			$request = 'SELECT p.mail, p.place, p.point, p.temps, cy.nom, cy.prenom, cy.mail, cy.club, cy.categorie, co.distance 
 						FROM participe p
 						JOIN cycliste cy ON p.mail = cy.mail
+						JOIN course co ON p.id = co.id
 						WHERE p.id = :id';
 			$statement =$db->prepare($request);
 			$statement->bindParam(':id', $id, PDO::PARAM_INT);

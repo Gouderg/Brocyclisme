@@ -10,7 +10,7 @@
 // \param data Contient les paramètres supplémentaires
 // \return Renvoie la réponse du serveur décodé à la fonction de callback
 function ajaxRequest(type, url, callback, data = null) {
-	let xhr = new XMLHttpRequest();			// Création d'un nouveau protocole
+	let xhr = new XMLHttpRequest();			// Création d'un nouveau protocole Http
 	if (type == 'GET' && data != null) {
 		url += '?' + data;
 	}

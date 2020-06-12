@@ -1,7 +1,13 @@
 'use strict';
 
+// Requête initiale
 ajaxRequest('GET', urlCir2+'/php/request.php/course', loadCourse);
 
+//------------------------------------------------------------------
+//--- loadCourse ---------------------------------------------------
+//------------------------------------------------------------------
+// Affiche la liste des courses
+// \param liste Contient des informations concernants les courses
 function loadCourse(liste) {
 	$('#secInf').hide();	// On cache toutes les sections
 	$('#secInsc').hide();
@@ -36,7 +42,8 @@ function loadCourse(liste) {
 					   		'<td>'+elt.club+'</td>' +
 							'<td><button type="submit" class="btn btn-primary" id="btnInf">Information</button></td>';
 
-		// Si la course est passée, on propose le classement, si la course n'est pas passée, on propose l'inscription
+		// Si la course est passée, on propose le classement (si c'est l'orgaisateur de la course
+		// Si la course n'est pas passée, on propose l'inscription
 		if (temp - now > 0) {
 			listeCourse += '<td><button type="submit" class="btn btn-primary" id="btnInsc">Inscription</button></td>';	
 		} else {
@@ -77,7 +84,11 @@ function loadCourse(liste) {
 	});
 }
 
-// Fonction qui affiche la course détaillé et les participants en fonction de qui on est
+//------------------------------------------------------------------
+//--- loadInfo -----------------------------------------------------
+//------------------------------------------------------------------
+// Affiche des informations précises concernants une course et des cyclistes
+// \param info Contient des informations concernants une course et des cyclistes
 function loadInfo(info) {
 	$('#secInf').show(); 	// On affiche la section avec Information et on cache le reste
 	$('#secInsc').hide();
@@ -133,7 +144,11 @@ function loadInfo(info) {
 }
 
 
-// Fonction qui propose une inscription d'une personne à une course
+//------------------------------------------------------------------
+//--- inscCourse ---------------------------------------------------
+//------------------------------------------------------------------
+// Propose l'insciption à une course
+// \param idCourse Contient l'id de la course
 function inscCourse(idCourse) {
 	$('#secInf').hide();	// On affiche le formulaire d'inscription et on cache le reste
 	$('#secInsc').show();
@@ -144,14 +159,19 @@ function inscCourse(idCourse) {
 	// On rajoute un titre
 	$('#titreInsc').html("Inscription à la course " + idCourse);
 
+	// On attends que le user clique sur le bouton envoyé du formulaire
 	$('#formInsc').submit(updateInfoCourse);
 }
 
-// Fonction qui récupère les informations et qui les update dans la base de donnée
+//------------------------------------------------------------------
+//--- updateInfoCourse ---------------------------------------------
+//------------------------------------------------------------------
+// Récupère les informations du formulaire et les envoies dans la bdd
+// \param event Évènement de la page
 function updateInfoCourse(event) {
 	event.preventDefault();
+
 	ajaxRequest('POST', urlCir2+'/php/request.php/course/', (error) => {
-		console.log(error.error);
 		// On traite les erreurs renvoyé par le serveur suite à de précédentes tentatives
 		if (typeof(error.error) != "undefined") {
 			$('#secError').show();
@@ -186,7 +206,11 @@ function updateInfoCourse(event) {
 	   '&id=' + Cookies.get('idCourse'));
 };
 
-
+//------------------------------------------------------------------
+//--- classCourse --------------------------------------------------
+//------------------------------------------------------------------
+// Affiche le classement d'une course
+// \param classement Contient des informations sur le classement
 function classCourse(classement){
 	$("#classementCourse").show();
 	$('#secInf').hide();
@@ -199,6 +223,7 @@ function classCourse(classement){
 								'<th scope="col">Place</th>' +
 								'<th scope="col">Points</th>' +
 								'<th scope="col">Temps</th>' +
+								'<th scope="col">Vitesse</th>' +
 								'<th scope="col">Nom</th>' +
 								'<th scope="col">Prénom</th>' +
 								'<th scope="col">Email</th>' +
@@ -208,11 +233,17 @@ function classCourse(classement){
 							'</thead>' +
 							'<tbody>';
 
-		classement.forEach(function(elt) {  
+		classement.forEach(function(elt) {
+			// Récupération de la vitesse
+			var temps = elt.temps.split(':');
+			var seconds = parseInt(temps[0], 10) * 3600 + parseInt(temps[1], 10) * 60 + parseInt(temps[2], 10);
+			var vitesse = (((elt.distance * 1000) / seconds) * 3.6).toFixed(0);
+			
 			Classement += '<tr id="'+ elt.mail + '">' +
 							'<th>' + elt.place + '</th>' +
 					  	 	'<td>' + elt.point + '</td>' +
 					  	 	'<td>' + elt.temps + '</td>' +
+					  	 	'<td>' + vitesse + ' km/h</td>' +
 					   	 	'<td>' + elt.nom + '</td>' +
 					   	 	'<td>' + elt.prenom + '</td>'+
 					   	 	'<td>' + elt.mail + '</td>'+
@@ -226,6 +257,8 @@ function classCourse(classement){
 
     
     $("#classementCourse").html(Classement);
+
+    // Attente du click pour l'impression de la page
     $('#classementCourse').on('click','#print', () => {
     	print(classement);
 	});
