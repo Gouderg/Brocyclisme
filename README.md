@@ -22,7 +22,7 @@ Le projet à été essayé sous WAMP et sous Linux.
 Le site possède sa propre base de donnée que vous devez charger afin de le rendre fonctionnel.
 Après vous être rendu à la racine du site, allez dans votre terminal mysql et exécutez la commande suivante:
 ```sql
-	SOURCE sql/bddGood.sql;
+	SOURCE api/sql/bddGood.sql;
 ```
 Tout est inclus dans ce fichier, mais si vous voulez changer les logins de connexion, vous pouvez changer les constantes dans le fichier api/php/constante.php
 On peux également changer l'url de notre site dans front/js/constantes.js
@@ -64,8 +64,8 @@ prj-cir2-web-front.monposte.conf : (N'oubliez pas d'enregistrer !!)
 
 On rajoute ces deux lignes en dessous du localhost:	
 
-	  127.0.0.1       prj-cir2-web-api.monposte
-	  127.0.0.1		  prj-cir2-web-front.monposte
+	  127.0.0.1		prj-cir2-web-api.monposte
+	  127.0.0.1		prj-cir2-web-front.monposte
 
 Si tout est bon, si vous faites un ping de votre url, vous devriez avoir une réponse du localhost. C'est signe que cela fonctionne
 
@@ -103,5 +103,4 @@ Il est constitué de deux parties :
 
  * La première permettant au responsable du club de gérer les différents cyclistes de son club en visualisant leurs fiches 
 	qu'il pourra modifier. 
- * La deuxième permettant au responsable du club de gérer les différentes courses à venir ou passées en s'informant sur la course 
-	,en inscrivant des cyclistes ou alors en visualisant le classement de la course passée (s'il s'agit de l'organisateur de la course).
+ * La deuxième permettant au responsable du club de gérer les différentes courses à venir ou passées en s'informant sur la course, en inscrivant des cyclistes ou alors en visualisant le classement de la course passée (s'il s'agit de l'organisateur de la course).
