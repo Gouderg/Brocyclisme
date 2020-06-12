@@ -93,6 +93,6 @@ final d’une course du point de vue d'un responsable de club.
 Il est constitué de deux parties : 
 
  * La première permettant au responsable du club de gérer les différents cyclistes de son club en visualisant leurs fiches 
- 	qu'il pourra modifier 
+ 	qu'il pourra modifier. 
  * La deuxième permettant au responsable du club de gérer les différentes courses à venir ou passées en s'informant sur la course 
  	,en inscrivant des cyclistes ou alors en visualisant le classement de la course passée (s'il s'agit de l'organisateur de la course).
